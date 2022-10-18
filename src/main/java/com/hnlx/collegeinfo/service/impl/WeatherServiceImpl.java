@@ -16,8 +16,10 @@ public class WeatherServiceImpl implements WeatherService {
     @Override
     public Object getWeather(GetWeatherParam param) {
         RestTemplate restTemplate = new RestTemplate();
-        Object object = restTemplate.getForObject("https://api.openweathermap.org/data/3.0/onecall?lat={lat}&lon={lon}&appid={API key}",
-                Object.class,param.getLatitude(),param.getLongitude(), ApiKey.OPENWEATHER_KEY);
+        Object object = restTemplate.
+                getForObject(
+                        "http://api.openweathermap.org/data/2.5/forecast?lat={lat}&lon={lon}&appid={API key}&lang={language}&units={measurement}",
+                Object.class,param.getLatitude(),param.getLongitude(), ApiKey.OPENWEATHER_KEY,"zh_cn","metric");
         return object;
     }
 }

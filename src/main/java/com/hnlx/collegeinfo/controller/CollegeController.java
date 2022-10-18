@@ -3,8 +3,10 @@ package com.hnlx.collegeinfo.controller;
 import com.alibaba.fastjson2.JSON;
 import com.hnlx.collegeinfo.entity.param.college.CollegeBasicInfoParam;
 import com.hnlx.collegeinfo.entity.param.college.CollegeIntroParam;
+import com.hnlx.collegeinfo.entity.param.college.ZhihuAnswerParam;
 import com.hnlx.collegeinfo.entity.returnning.ResultData;
 import com.hnlx.collegeinfo.service.CollegeService;
+import com.hnlx.collegeinfo.service.ZhihuService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.Parameters;
@@ -28,6 +30,7 @@ import javax.annotation.Resource;
 public class CollegeController {
     @Resource
     CollegeService collegeService;
+    ZhihuService zhihuService;
     @Operation(summary = "百度百科获取大学简介、图片")
     @GetMapping("intro")
     public ResultData<Object> baiduCollegeIntro(CollegeIntroParam param){
@@ -45,6 +48,13 @@ public class CollegeController {
         else{
             return new ResultData<>().FAILED();
         }
+    }
+
+    @Operation(summary = "获取知乎学校相关回答(综合排序)")
+    @GetMapping("zhihu_answer")
+    public ResultData<Object> zhihuAnswer(ZhihuAnswerParam param){
+        Object obj = zhihuService.getAnswer(param);
+        return new ResultData<>().sendObj(true,obj);
     }
 
 }
