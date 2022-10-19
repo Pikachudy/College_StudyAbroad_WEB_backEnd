@@ -1,0 +1,30 @@
+Manifest-Version: 1.0
+Main-Class: 
+Class-Path: spring-boot-configuration-processor-2.7.4.jar log4j-api-2.17
+ .2.jar jackson-module-parameter-names-2.13.4.jar snakeyaml-1.30.jar tom
+ cat-embed-el-9.0.65.jar logback-classic-1.2.11.jar jackson-core-2.13.4.
+ jar spring-boot-starter-2.7.4.jar spring-boot-starter-tomcat-2.7.4.jar 
+ mysql-connector-java-8.0.30.jar logback-core-1.2.11.jar attoparser-2.0.
+ 5.RELEASE.jar jakarta.activation-api-1.2.2.jar spring-boot-devtools-2.7
+ .4.jar slf4j-api-1.7.36.jar spring-boot-starter-logging-2.7.4.jar sprin
+ g-aop-5.3.23.jar jackson-databind-2.13.4.jar jackson-dataformat-yaml-2.
+ 13.4.jar thymeleaf-spring5-3.0.15.RELEASE.jar spring-boot-starter-json-
+ 2.7.4.jar thymeleaf-extras-java8time-3.0.4.RELEASE.jar fastjson-2.0.14.
+ jar jakarta.xml.bind-api-2.3.3.jar spring-boot-autoconfigure-2.7.4.jar 
+ jboss-logging-3.4.3.Final.jar unbescape-1.1.6.RELEASE.jar jackson-datat
+ ype-jdk8-2.13.4.jar tomcat-embed-core-9.0.65.jar classmate-1.5.1.jar we
+ bjars-locator-core-0.50.jar spring-web-5.3.23.jar fastjson2-extension-2
+ .0.14.jar commons-lang3-3.12.0.jar spring-boot-starter-thymeleaf-2.7.4.
+ jar spring-context-5.3.23.jar jakarta.validation-api-2.0.2.jar spring-w
+ ebmvc-5.3.23.jar spring-boot-2.7.4.jar spring-core-5.3.23.jar spring-bo
+ ot-starter-validation-2.7.4.jar spring-beans-5.3.23.jar gson-2.9.0.jar 
+ fastjson2-2.0.14.jar thymeleaf-3.0.15.RELEASE.jar jackson-annotations-2
+ .13.4.jar swagger-models-2.2.2.jar jul-to-slf4j-1.7.36.jar log4j-to-slf
+ 4j-2.17.2.jar spring-expression-5.3.23.jar springdoc-openapi-common-1.6
+ .11.jar tomcat-embed-websocket-9.0.65.jar spring-boot-starter-web-2.7.4
+ .jar springdoc-openapi-ui-1.6.11.jar swagger-annotations-2.2.2.jar swag
+ ger-ui-4.14.0.jar hibernate-validator-6.2.5.Final.jar swagger-core-2.2.
+ 2.jar classgraph-4.8.149.jar jakarta.annotation-api-1.3.5.jar spring-jc
+ l-5.3.23.jar springdoc-openapi-webmvc-core-1.6.11.jar lombok-1.18.24.ja
+ r jackson-datatype-jsr310-2.13.4.jar
+

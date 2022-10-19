@@ -23,7 +23,7 @@ public class WeatherController {
     @Resource
     WeatherService weatherService;
 
-    @Operation(description = "获取某地区天气")
+    @Operation(summary = "获取某地区天气")
     @GetMapping("getWeather")
     public ResultData<Object> getWeather(GetWeatherParam param){
         Object weather = weatherService.getWeather(param);
