@@ -15,5 +15,9 @@ public interface ApiKey {
     天行数据 api key
      */
     String TIANXING_KEY="7304c82a2de6b767032a8479bd969e63";
+    /*
+    Bing api key
+     */
+    String BING_KEY="4ef95cbbe29c4f12b53350e0f1433daa";
 
 }

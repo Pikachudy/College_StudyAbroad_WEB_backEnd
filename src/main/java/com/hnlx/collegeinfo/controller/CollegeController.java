@@ -1,20 +1,19 @@
 package com.hnlx.collegeinfo.controller;
 
-import com.alibaba.fastjson2.JSON;
+import com.alibaba.fastjson.JSONObject;
+import com.hnlx.collegeinfo.entity.param.college.BingVideoParam;
 import com.hnlx.collegeinfo.entity.param.college.CollegeBasicInfoParam;
 import com.hnlx.collegeinfo.entity.param.college.CollegeIntroParam;
-import com.hnlx.collegeinfo.entity.param.college.ZhihuAnswerParam;
 import com.hnlx.collegeinfo.entity.returnning.ResultData;
+import com.hnlx.collegeinfo.service.BingService;
 import com.hnlx.collegeinfo.service.CollegeService;
-import com.hnlx.collegeinfo.service.ZhihuService;
+
 import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.Parameter;
-import io.swagger.v3.oas.annotations.Parameters;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.client.RestTemplate;
+
 
 import javax.annotation.Resource;
 
@@ -30,7 +29,8 @@ import javax.annotation.Resource;
 public class CollegeController {
     @Resource
     CollegeService collegeService;
-    ZhihuService zhihuService;
+    @Resource
+    BingService BingService;
     @Operation(summary = "百度百科获取大学简介、图片")
     @GetMapping("intro")
     public ResultData<Object> baiduCollegeIntro(CollegeIntroParam param){
@@ -50,10 +50,10 @@ public class CollegeController {
         }
     }
 
-    @Operation(summary = "获取知乎学校相关回答(综合排序)")
-    @GetMapping("zhihu_answer")
-    public ResultData<Object> zhihuAnswer(ZhihuAnswerParam param){
-        Object obj = zhihuService.getAnswer(param);
+    @Operation(summary = "Bing获取大学相关视频")
+    @GetMapping("bing_search_video")
+    public ResultData<Object> bingSearchVideo(BingVideoParam param){
+        Object obj = JSONObject.parseObject(BingService.getVideo(param),Object.class);
         return new ResultData<>().sendObj(true,obj);
     }
 
