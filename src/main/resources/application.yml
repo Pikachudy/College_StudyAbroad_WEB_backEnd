@@ -1,0 +1,13 @@
+server:
+  port: 8090
+
+springdoc:
+  swagger-ui:
+    path: /doc
+  packages-to-scan: com.hnlx.collegeinfo
+
+# datasource is in nacos
+
+mybatis-plus:
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl

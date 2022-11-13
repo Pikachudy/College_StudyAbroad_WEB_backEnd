@@ -11,7 +11,7 @@ import javax.validation.constraints.NotNull;
  * @date : 2022/10/17 20:14
  */
 @Data
-@Schema(description = "从Bing获取大学相关视频入参")
+@Schema(description = "从Bing获取大学相关信息入参")
 public class BingVideoParam {
     @NotNull
     @Schema(description = "大学名称")

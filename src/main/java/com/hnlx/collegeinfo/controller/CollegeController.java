@@ -25,7 +25,7 @@ import javax.annotation.Resource;
 
 @Tag(name = "大学信息相关")
 @RestController
-@RequestMapping("api/v1/college")
+@RequestMapping("college/detail")
 public class CollegeController {
     @Resource
     CollegeService collegeService;
@@ -50,8 +50,8 @@ public class CollegeController {
         }
     }
 
-    @Operation(summary = "Bing获取大学相关视频")
-    @GetMapping("bing_search_video")
+    @Operation(summary = "Bing获取大学相关资料")
+    @GetMapping("bing_search")
     public ResultData<Object> bingSearchVideo(BingVideoParam param){
         Object obj = JSONObject.parseObject(BingService.getVideo(param),Object.class);
         return new ResultData<>().sendObj(true,obj);

@@ -19,13 +19,13 @@ import javax.annotation.Resource;
  */
 @Tag(name = "新闻相关")
 @RestController
-@RequestMapping("api/v1/news")
+@RequestMapping("college/news")
 public class NewsController {
     @Resource
     NewsService newsService;
 
     @Operation(summary = "获取地区国际新闻")
-    @GetMapping("/district_news")
+    @GetMapping()
     public ResultData<Object> getDistrictNews(DistrictNewsParam param){
         Object obj = newsService.getDistrictNews(param);
         return new ResultData<>().sendObj(true,obj);

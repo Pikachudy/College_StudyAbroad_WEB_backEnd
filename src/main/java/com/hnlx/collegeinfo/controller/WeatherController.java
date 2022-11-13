@@ -18,13 +18,13 @@ import javax.annotation.Resource;
  */
 @Tag(name = "天气相关")
 @RestController
-@RequestMapping("api/v1/weather")
+@RequestMapping("college/weather")
 public class WeatherController {
     @Resource
     WeatherService weatherService;
 
     @Operation(summary = "获取某地区天气")
-    @GetMapping("getWeather")
+    @GetMapping()
     public ResultData<Object> getWeather(GetWeatherParam param){
         Object weather = weatherService.getWeather(param);
         return new ResultData<>().sendObj(true,weather);

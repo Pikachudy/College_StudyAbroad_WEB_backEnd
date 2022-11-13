@@ -1,0 +1,10 @@
+spring:
+  application:
+    name: CollegeService
+  cloud:
+    nacos:
+      discovery:
+        server-addr: 106.54.160.145:8848
+      config:
+        server-addr: 106.54.160.145:8848
+        file-extension: yaml
