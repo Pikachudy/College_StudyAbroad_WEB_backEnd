@@ -1,5 +1,6 @@
 package com.hnlx.collegeinfo.service.impl;
 
+import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.github.yulichang.wrapper.MPJLambdaWrapper;
@@ -8,14 +9,19 @@ import com.hnlx.collegeinfo.entity.po.College;
 import com.hnlx.collegeinfo.entity.param.college.CollegeBasicInfoParam;
 import com.hnlx.collegeinfo.entity.param.college.CollegeIntroParam;
 import com.hnlx.collegeinfo.entity.po.Rank;
+import com.hnlx.collegeinfo.entity.returnning.college.BaiduBaikeResult;
+import com.hnlx.collegeinfo.entity.returnning.college.CollegeListResult;
 import com.hnlx.collegeinfo.entity.vo.CollegeBasicInfo;
-import com.hnlx.collegeinfo.map.CollegeBasicInfoMapper;
 import com.hnlx.collegeinfo.map.CollegeMapper;
 import com.hnlx.collegeinfo.service.CollegeService;
+import org.springframework.data.redis.core.StringRedisTemplate;
+import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 import javax.annotation.Resource;
+import java.time.Duration;
+import java.util.List;
 
 
 /**
@@ -28,7 +34,7 @@ public class CollegeServiceImpl implements CollegeService {
     @Resource
     CollegeMapper collegeMapper;
     @Resource
-    CollegeBasicInfoMapper collegeBasicInfoMapper;
+    StringRedisTemplate stringRedisTemplate;
     @Override
     public Object getUniversityById(int id) {
         College college = collegeMapper.selectById(id);
@@ -58,9 +64,14 @@ public class CollegeServiceImpl implements CollegeService {
         // 分页
         int page_size = param.getPage_size();
         int cur_page = param.getPage();
+        List<CollegeBasicInfo> collegeBasicInfoList = collegeMapper.selectJoinList(CollegeBasicInfo.class,wrapper);
+        int college_num=collegeBasicInfoList.size();
+        CollegeListResult listResult = new CollegeListResult();
+
+        listResult.setCollege_num(college_num);
         if(page_size==0){
             // 不进行分页，返回所有
-            return collegeMapper.selectJoinList(CollegeBasicInfo.class,wrapper);
+            listResult.setCollegeBasicInfoList(collegeBasicInfoList);
         }
         else{
             IPage<CollegeBasicInfo> iPage = collegeMapper.selectJoinPage(
@@ -68,15 +79,31 @@ public class CollegeServiceImpl implements CollegeService {
                     CollegeBasicInfo.class,
                     wrapper
             );
-            return iPage.getRecords();
+            listResult.setCollegeBasicInfoList(iPage.getRecords());
         }
+        return listResult;
     }
 
     @Override
     public Object baiduCollegeIntro(CollegeIntroParam param) {
+        // 构造索引读取缓存
+        String college_info_key = param.getCollege_name()+"info_baidu";
+        ValueOperations<String, String> ops = stringRedisTemplate.opsForValue();
+        BaiduBaikeResult info_cached = JSONObject.parseObject(ops.get(college_info_key), BaiduBaikeResult.class);
+
+        if(info_cached!=null){
+            return info_cached;
+        }
+        // 若无缓存则获取
         RestTemplate restTemplate = new RestTemplate();
-        Object object = restTemplate.getForObject("https://api.wer.plus/api/dub?t="+param.getCollege_name(),Object.class);
-        return object;
+        BaiduBaikeResult baiduBaikeResult = restTemplate.getForObject("https://api.wer.plus/api/dub?t="+param.getCollege_name(),BaiduBaikeResult.class);
+        //System.out.println(object);
+        assert baiduBaikeResult != null;
+        if(baiduBaikeResult.getCode()==200){
+          // 缓存存储
+            ops.set(college_info_key, JSONObject.toJSONString(baiduBaikeResult), Duration.ofDays(1));
+        }
+        return baiduBaikeResult;
     }
 
     @Override

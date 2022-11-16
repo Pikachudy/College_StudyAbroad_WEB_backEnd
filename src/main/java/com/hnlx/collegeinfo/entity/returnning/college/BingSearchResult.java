@@ -1,7 +1,6 @@
-package com.hnlx.collegeinfo.entity.returnning;
+package com.hnlx.collegeinfo.entity.returnning.college;
 
 import io.swagger.v3.oas.annotations.media.Schema;
-import lombok.Data;
 
 import java.util.HashMap;
 

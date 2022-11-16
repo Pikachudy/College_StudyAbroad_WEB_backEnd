@@ -4,13 +4,11 @@ package com.hnlx.collegeinfo.service.impl;
 
 import com.hnlx.collegeinfo.common.ApiKey;
 import com.hnlx.collegeinfo.entity.param.college.BingVideoParam;
-import com.hnlx.collegeinfo.entity.returnning.BingSearchResult;
 import com.hnlx.collegeinfo.service.BingService;
 
 import lombok.SneakyThrows;
 import org.springframework.stereotype.Service;
 
-import javax.naming.directory.SearchResult;
 import javax.net.ssl.HttpsURLConnection;
 import java.io.InputStream;
 import java.net.URL;
