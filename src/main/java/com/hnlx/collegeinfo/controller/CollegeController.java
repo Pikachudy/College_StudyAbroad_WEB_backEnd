@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.hnlx.collegeinfo.entity.param.college.BingVideoParam;
 import com.hnlx.collegeinfo.entity.param.college.CollegeBasicInfoParam;
 import com.hnlx.collegeinfo.entity.param.college.CollegeIntroParam;
+import com.hnlx.collegeinfo.entity.param.college.SelectListParam;
 import com.hnlx.collegeinfo.entity.returnning.ResultData;
 import com.hnlx.collegeinfo.service.BingService;
 import com.hnlx.collegeinfo.service.CollegeService;
@@ -11,6 +12,7 @@ import com.hnlx.collegeinfo.service.CollegeService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -25,21 +27,33 @@ import javax.annotation.Resource;
 
 @Tag(name = "大学信息相关")
 @RestController
-@RequestMapping("college/detail")
+@RequestMapping("college")
 public class CollegeController {
     @Resource
     CollegeService collegeService;
     @Resource
-    BingService BingService;
+    BingService bingService;
+    @Operation(summary = "根据id获取大学基本信息")
+    @GetMapping("{university_id}")
+    public ResultData<Object> getUniversityById(@PathVariable("university_id") int id){
+        Object obj = collegeService.getUniversityById(id);
+        return new ResultData<>().sendObj(true,obj);
+    }
+    @Operation(summary = "根据条件筛选高校列表（带分页）")
+    @GetMapping("list")
+    public ResultData<Object> getUniversityList(SelectListParam param){
+        Object obj = collegeService.getUniversityList(param);
+        return new ResultData<>().sendObj(true,obj);
+    }
     @Operation(summary = "百度百科获取大学简介、图片")
-    @GetMapping("intro")
+    @GetMapping("detail/intro")
     public ResultData<Object> baiduCollegeIntro(CollegeIntroParam param){
         Object obj=collegeService.baiduCollegeIntro(param);
         return new ResultData<>().sendObj(true,obj);
     }
 
     @Operation(summary = "Hipo获取大学域名、基本信息")
-    @GetMapping("basic_info")
+    @GetMapping("detail/basic_info")
     public ResultData<Object> hipoCollegeBasicInfo(CollegeBasicInfoParam param){
         Object obj = collegeService.hipoCollegeBasicInfo(param);
         if(obj!=null){
@@ -51,9 +65,9 @@ public class CollegeController {
     }
 
     @Operation(summary = "Bing获取大学相关资料")
-    @GetMapping("bing_search")
+    @GetMapping("detail/bing_search")
     public ResultData<Object> bingSearchVideo(BingVideoParam param){
-        Object obj = JSONObject.parseObject(BingService.getVideo(param),Object.class);
+        Object obj = JSONObject.parseObject(bingService.getVideo(param),Object.class);
         return new ResultData<>().sendObj(true,obj);
     }
 
