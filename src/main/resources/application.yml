@@ -8,18 +8,7 @@ springdoc:
 
 # datasource is in nacos
 
-mybatis-plus:
-  configuration:
-    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
-spring:
-  redis:
-    host: 43.143.84.166
-    port: 6379
-    password: hnlx411
-    timeout: 10s
-    lettuce:
-      pool:
-        max-active: 16
-        max-wait: 10ms
-        max-idle: 16
-        min-idle: 0
+#mybatis-plus:
+#  configuration:
+#    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+
