@@ -1,14 +1,12 @@
 package com.hnlx.collegeinfo.controller;
 
 import com.hnlx.collegeinfo.entity.param.institution.InstitutionListParam;
+import com.hnlx.collegeinfo.entity.param.institution.InstitutionPostParam;
 import com.hnlx.collegeinfo.entity.returnning.ResultData;
 import com.hnlx.collegeinfo.service.InstitutionService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 
@@ -36,5 +34,16 @@ public class InstitutionController {
     public ResultData<Object> getInstitutionList(InstitutionListParam param){
         Object obj = institutionService.getInstitutionList(param);
         return new ResultData<>().sendObj(true,obj);
+    }
+
+    @Operation(summary = "添加机构信息")
+    @PostMapping
+    public ResultData<Object> reply(@RequestBody InstitutionPostParam param){
+        Object obj = institutionService.createInstitution(param);
+        if(obj == null){
+            return new ResultData<>().FAILED();
+        } else {
+            return new ResultData<>().sendObj(true, obj);
+        }
     }
 }

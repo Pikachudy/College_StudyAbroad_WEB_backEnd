@@ -4,7 +4,7 @@ import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 
-import java.sql.Timestamp;
+import java.sql.Date;
 
 /**
  * @Author: qxh
@@ -26,7 +26,7 @@ public class Institution {
     String institutionIntroduction;
     String institutionLessonsCharacter;
     String institutionLocation;
-    Timestamp institutionCreatetime;
+    Date institutionCreatetime;
     String institutionProvince;
     String institutionTarget;
     String institutionPhoto;

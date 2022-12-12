@@ -1,6 +1,9 @@
 package com.hnlx.collegeinfo.service;
 
 import com.hnlx.collegeinfo.entity.param.institution.InstitutionListParam;
+import com.hnlx.collegeinfo.entity.param.institution.InstitutionPostParam;
+
+import java.io.IOException;
 
 /**
  * @Author: qxh
@@ -10,4 +13,5 @@ import com.hnlx.collegeinfo.entity.param.institution.InstitutionListParam;
 public interface InstitutionService {
     Object getInstitutionById(int institution_id);
     Object getInstitutionList(InstitutionListParam param);
+    Object createInstitution(InstitutionPostParam param);
 }
