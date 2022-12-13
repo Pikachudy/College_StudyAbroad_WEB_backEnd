@@ -2,14 +2,17 @@ package com.hnlx.collegeinfo.service.impl;
 
 import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.github.yulichang.wrapper.MPJLambdaWrapper;
 import com.hnlx.collegeinfo.entity.param.institution.InstitutionListParam;
 import com.hnlx.collegeinfo.entity.param.institution.InstitutionPostParam;
+import com.hnlx.collegeinfo.entity.po.FollowInstitution;
 import com.hnlx.collegeinfo.entity.po.Institution;
 import com.hnlx.collegeinfo.entity.returnning.institution.InstitutionDetail;
 import com.hnlx.collegeinfo.entity.vo.InstitutionBasicInfo;
+import com.hnlx.collegeinfo.map.FollowInstitutionMapper;
 import com.hnlx.collegeinfo.map.InstitutionMapper;
 import com.hnlx.collegeinfo.service.InstitutionService;
 import com.hnlx.collegeinfo.utils.OssUtils;
@@ -19,6 +22,7 @@ import org.springframework.stereotype.Service;
 import javax.annotation.Resource;
 import java.io.IOException;
 import java.sql.Timestamp;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -32,6 +36,8 @@ import java.util.Map;
 public class InstitutionServiceImpl implements InstitutionService {
     @Resource
     private InstitutionMapper institutionMapper;
+    @Resource
+    private FollowInstitutionMapper followInstitutionMapper;
     @Resource
     OssUtils ossUtils;
 
@@ -130,4 +136,40 @@ public class InstitutionServiceImpl implements InstitutionService {
         map.put("institution_id",id);
         return new JSONObject(map);
     }
+
+    /**
+     * @Author qxh
+     * @Description 关注机构
+     **/
+    @Override
+    public Object followInstitution(int user_id, int institution_id) {
+        QueryWrapper<FollowInstitution> wrapper = new QueryWrapper<FollowInstitution>()
+                .eq("institution_id",institution_id)
+                .eq("user_id",user_id);
+
+        FollowInstitution old = followInstitutionMapper.selectOne(wrapper);
+
+        try {
+            if (old == null) {
+                FollowInstitution followInstitution = new FollowInstitution();
+                followInstitution.setInstitutionId(institution_id);
+                followInstitution.setUserId(user_id);
+                followInstitution.setFollowTime(new Date());
+                followInstitution.setCancel(false);
+                followInstitutionMapper.insert(followInstitution);
+            } else if (old.isCancel()) {
+                UpdateWrapper<FollowInstitution> wrapper1 = new UpdateWrapper<FollowInstitution>()
+                        .eq("user_id", user_id)
+                        .eq("institution_id", institution_id)
+                        .set("follow_time", new Date())
+                        .set("cancel", false);
+                followInstitutionMapper.update(old, wrapper1);
+            }
+        } catch (Exception e){
+            return -1;
+        }
+        return 0;
+    }
+
+
 }

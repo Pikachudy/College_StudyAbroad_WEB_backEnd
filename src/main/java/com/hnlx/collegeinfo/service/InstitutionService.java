@@ -14,4 +14,5 @@ public interface InstitutionService {
     Object getInstitutionById(int institution_id);
     Object getInstitutionList(InstitutionListParam param);
     Object createInstitution(InstitutionPostParam param);
+    Object followInstitution(int user_id, int institution_id);
 }

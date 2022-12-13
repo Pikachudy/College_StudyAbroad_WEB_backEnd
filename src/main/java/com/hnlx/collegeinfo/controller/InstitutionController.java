@@ -38,12 +38,23 @@ public class InstitutionController {
 
     @Operation(summary = "添加机构信息")
     @PostMapping
-    public ResultData<Object> reply(@RequestBody InstitutionPostParam param){
+    public ResultData<Object> addInstitution(@RequestBody InstitutionPostParam param){
         Object obj = institutionService.createInstitution(param);
         if(obj == null){
             return new ResultData<>().FAILED();
         } else {
             return new ResultData<>().sendObj(true, obj);
+        }
+    }
+
+    @Operation(summary = "关注机构")
+    @PostMapping("follow")
+    public ResultData<Object> followInstitution(int user_id, int institution_id){
+        Object obj = institutionService.followInstitution(user_id,institution_id);
+        if((int)obj == -1){
+            return new ResultData<>().FAILED();
+        } else {
+            return new ResultData<>().OK();
         }
     }
 }
