@@ -17,4 +17,6 @@ public interface InstitutionService {
     Object createInstitution(InstitutionPostParam param);
     Object followInstitution(FollowInstitutionParam param);
     Object cancelFollowInstitution(FollowInstitutionParam param);
+    Object isFollowInstitution(FollowInstitutionParam param);
+    Object followInstitutionList(int user_id);
 }

@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.github.yulichang.query.MPJQueryWrapper;
 import com.github.yulichang.wrapper.MPJLambdaWrapper;
 import com.hnlx.collegeinfo.entity.param.institution.FollowInstitutionParam;
 import com.hnlx.collegeinfo.entity.param.institution.InstitutionListParam;
@@ -13,6 +14,7 @@ import com.hnlx.collegeinfo.entity.po.FollowInstitution;
 import com.hnlx.collegeinfo.entity.po.Institution;
 import com.hnlx.collegeinfo.entity.returnning.institution.InstitutionDetail;
 import com.hnlx.collegeinfo.entity.vo.InstitutionBasicInfo;
+import com.hnlx.collegeinfo.entity.vo.InstitutionListElement;
 import com.hnlx.collegeinfo.map.FollowInstitutionMapper;
 import com.hnlx.collegeinfo.map.InstitutionMapper;
 import com.hnlx.collegeinfo.service.InstitutionService;
@@ -21,10 +23,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * @Author: qxh
@@ -129,7 +128,6 @@ public class InstitutionServiceImpl implements InstitutionService {
             return null;
         }
 
-
         institutionMapper.insert(newInstitution);
         Map<String, Object> map = new HashMap<>();
         map.put("institution_id",id);
@@ -172,6 +170,10 @@ public class InstitutionServiceImpl implements InstitutionService {
         return 0;
     }
 
+    /**
+     * @Author qxh
+     * @Description 取消关注机构
+     **/
     @Override
     public Object cancelFollowInstitution(FollowInstitutionParam param) {
         int user_id = param.getUser_id();
@@ -201,5 +203,59 @@ public class InstitutionServiceImpl implements InstitutionService {
         return 0;
     }
 
+    /**
+     * @Author qxh
+     * @Description 查看是否关注机构
+     **/
+    @Override
+    public Object isFollowInstitution(FollowInstitutionParam param) {
+        int user_id = param.getUser_id();
+        int institution_id = param.getInstitution_id();
+        QueryWrapper<FollowInstitution> wrapper = new QueryWrapper<FollowInstitution>()
+                .eq("institution_id",institution_id)
+                .eq("cancel",false);
 
+        long count = followInstitutionMapper.selectCount(wrapper);
+
+        FollowInstitution followInstitution = followInstitutionMapper.selectOne(wrapper.eq("user_id",user_id));
+        boolean flag = false;
+        if(followInstitution != null){
+            flag = true;
+        }
+
+        Map<String, Object> map = new HashMap<>();
+        map.put("isFollow",flag);
+        map.put("count",count);
+        return new JSONObject(map);
+    }
+
+    /**
+     * @Author qxh
+     * @Description 获取用户关注的机构列表
+     **/
+    @Override
+    public Object followInstitutionList(int user_id) {
+        QueryWrapper<FollowInstitution> wrapper = new QueryWrapper<FollowInstitution>()
+                .eq("user_id",user_id)
+                .eq("cancel",false);
+
+        List<FollowInstitution> follows = followInstitutionMapper.selectList(wrapper);
+        List<InstitutionListElement> result = new ArrayList<>();
+
+        for(FollowInstitution follow:follows){
+            MPJQueryWrapper<Institution> wrapper1 = new MPJQueryWrapper<Institution>()
+                    .selectAll(Institution.class)
+                    .eq("institution_id",follow.getInstitutionId());
+
+            InstitutionListElement t = institutionMapper.selectJoinOne(InstitutionListElement.class,wrapper1);
+            result.add(t);
+        }
+
+        int count = result.size();
+
+        Map<String, Object> map = new HashMap<>();
+        map.put("count",count);
+        map.put("follows",result);
+        return new JSONObject(map);
+    }
 }
