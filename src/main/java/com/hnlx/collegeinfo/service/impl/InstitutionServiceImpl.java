@@ -10,6 +10,7 @@ import com.github.yulichang.wrapper.MPJLambdaWrapper;
 import com.hnlx.collegeinfo.entity.param.institution.FollowInstitutionParam;
 import com.hnlx.collegeinfo.entity.param.institution.InstitutionListParam;
 import com.hnlx.collegeinfo.entity.param.institution.InstitutionPostParam;
+import com.hnlx.collegeinfo.entity.param.institution.InstitutionPutParam;
 import com.hnlx.collegeinfo.entity.po.FollowInstitution;
 import com.hnlx.collegeinfo.entity.po.Institution;
 import com.hnlx.collegeinfo.entity.returnning.institution.InstitutionDetail;
@@ -91,21 +92,22 @@ public class InstitutionServiceImpl implements InstitutionService {
 
     /**
      * @Author qxh
-     * @Description 创建机构信息
+     * @Description 创建机构
      **/
     @Override
     public Object createInstitution(InstitutionPostParam param){
         Institution newInstitution = new Institution();
-        newInstitution.setInstitutionCity(param.getInstitution_city());
-        newInstitution.setInstitutionCreatetime(param.getInstitution_createtime());
-        newInstitution.setInstitutionEmail(param.getInstitution_email());
-        newInstitution.setInstitutionPhone(param.getInstitution_phone());
-        newInstitution.setInstitutionName(param.getInstitution_name());
-        newInstitution.setInstitutionLessons(param.getInstitution_lessons());
-        newInstitution.setInstitutionIntroduction(param.getInstitution_introduction());
-        newInstitution.setInstitutionTarget(param.getInstitution_target());
-        newInstitution.setInstitutionProvince(param.getInstitution_province());
-        newInstitution.setInstitutionLessonsCharacter(param.getInstitution_lessons_characteristic());
+        newInstitution.setInstitutionName(param.getName());
+        newInstitution.setInstitutionEmail(param.getEmail());
+        newInstitution.setInstitutionPhone(param.getPhone());
+        newInstitution.setInstitutionCity(param.getCity());
+        newInstitution.setInstitutionProvince(param.getProvince());
+        newInstitution.setInstitutionLocation(param.getLocation());
+        newInstitution.setInstitutionTarget(param.getTarget());
+        newInstitution.setInstitutionIntroduction(param.getIntroduction());
+        newInstitution.setInstitutionLessons(param.getLessons());
+        newInstitution.setInstitutionLessonsCharacter(param.getLessons_characteristic());
+        newInstitution.setInstitutionCreatetime(param.getCreatetime());
 
         Institution t = institutionMapper.selectOne(new QueryWrapper<Institution>()
                 .orderByDesc("institution_id")
@@ -119,9 +121,9 @@ public class InstitutionServiceImpl implements InstitutionService {
         newInstitution.setInstitutionId(id);
 
         try {
-            String qualifyUrl = ossUtils.uploadImage(param.getInstitution_qualify(), "institution/qualify/" + id);
+            String qualifyUrl = ossUtils.uploadImage(param.getQualify(), "institution/qualify/" + id);
             newInstitution.setInstitutionQualify(qualifyUrl);
-            String profileUrl = ossUtils.uploadImage(param.getInstitution_profile(), "institution/profile/" + id);
+            String profileUrl = ossUtils.uploadImage(param.getProfile(), "institution/profile/" + id);
             newInstitution.setInstitutionProfile(profileUrl);
         } catch (Exception e){
             System.out.println(e.getMessage());
@@ -133,6 +135,44 @@ public class InstitutionServiceImpl implements InstitutionService {
         map.put("institution_id",id);
         return new JSONObject(map);
     }
+
+    /**
+     * @Author qxh
+     * @Description 修改机构信息
+     **/
+    @Override
+    public Object changeInstitutionInfo(InstitutionPutParam param) {
+        Institution old = institutionMapper.selectById(param.getId());
+        if (old == null) {
+            return -1;
+        }
+        try {
+            UpdateWrapper<Institution> wrapper = new UpdateWrapper<Institution>()
+                    .eq("institution_id", param.getId())
+                    .set(param.getName() != null, "institution_name", param.getName())
+                    .set(param.getPhone() != null, "institution_phone", param.getPhone())
+                    .set(param.getEmail() != null, "institution_email", param.getEmail())
+                    .set(param.getQualify() != null, "institution_qualify", param.getQualify())
+                    .set(param.getIntroduction() != null, "institution_introduction", param.getIntroduction())
+                    .set(param.getProvince() != null, "institution_province", param.getProvince())
+                    .set(param.getProfile() != null, "institution_profile", param.getProfile())
+                    .set(param.getCity() != null, "institution_city", param.getCity())
+                    .set(param.getLocation() != null, "institution_location", param.getLocation())
+                    .set(param.getTarget() != null, "institution_target", param.getTarget())
+                    .set(param.getLessons() != null, "institution_lessons", param.getLessons())
+                    .set(param.getLessons_characteristic() != null, "institution_lessons_character", param.getLessons_characteristic());
+            institutionMapper.update(old,wrapper);
+        } catch (Exception e){
+            return -1;
+        }
+        return 0;
+    }
+
+    /**
+     * @Author qxh
+     * @Description 修改机构信息
+     **/
+
 
     /**
      * @Author qxh

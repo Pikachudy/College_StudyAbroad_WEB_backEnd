@@ -3,6 +3,7 @@ package com.hnlx.collegeinfo.controller;
 import com.hnlx.collegeinfo.entity.param.institution.FollowInstitutionParam;
 import com.hnlx.collegeinfo.entity.param.institution.InstitutionListParam;
 import com.hnlx.collegeinfo.entity.param.institution.InstitutionPostParam;
+import com.hnlx.collegeinfo.entity.param.institution.InstitutionPutParam;
 import com.hnlx.collegeinfo.entity.returnning.ResultData;
 import com.hnlx.collegeinfo.service.InstitutionService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -45,6 +46,17 @@ public class InstitutionController {
             return new ResultData<>().FAILED();
         } else {
             return new ResultData<>().sendObj(true, obj);
+        }
+    }
+
+    @Operation(summary = "修改机构信息")
+    @PutMapping
+    public ResultData<Object> changeInstitutionInfo(@RequestBody InstitutionPutParam param){
+        Object obj = institutionService.changeInstitutionInfo(param);
+        if((int)obj == -1){
+            return new ResultData<>().FAILED();
+        } else {
+            return new ResultData<>().OK();
         }
     }
 
