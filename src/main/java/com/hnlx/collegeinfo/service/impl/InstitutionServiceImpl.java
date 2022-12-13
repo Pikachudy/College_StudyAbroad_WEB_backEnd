@@ -136,6 +136,18 @@ public class InstitutionServiceImpl implements InstitutionService {
 
     /**
      * @Author qxh
+     * @Description 删除机构
+     **/
+    @Override
+    public Object deleteInstitution(int institution_id) {
+        QueryWrapper<Institution> wrapper = new QueryWrapper<Institution>()
+                .eq("institution_id",institution_id);
+
+        return institutionMapper.delete(wrapper);
+    }
+
+    /**
+     * @Author qxh
      * @Description 关注机构
      **/
     @Override

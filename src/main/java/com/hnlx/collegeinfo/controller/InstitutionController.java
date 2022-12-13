@@ -48,6 +48,17 @@ public class InstitutionController {
         }
     }
 
+    @Operation(summary = "删除机构")
+    @DeleteMapping("{institution_id}")
+    public ResultData<Object> deleteInstitution(@PathVariable("institution_id") int id){
+        Object obj = institutionService.deleteInstitution(id);
+        if((int)obj == 1){
+            return new ResultData<>().OK();
+        } else {
+            return new ResultData<>().FAILED();
+        }
+    }
+
     @Operation(summary = "关注机构")
     @PostMapping("follow")
     public ResultData<Object> followInstitution(FollowInstitutionParam param){
