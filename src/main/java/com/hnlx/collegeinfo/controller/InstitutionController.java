@@ -1,9 +1,6 @@
 package com.hnlx.collegeinfo.controller;
 
-import com.hnlx.collegeinfo.entity.param.institution.FollowInstitutionParam;
-import com.hnlx.collegeinfo.entity.param.institution.InstitutionListParam;
-import com.hnlx.collegeinfo.entity.param.institution.InstitutionPostParam;
-import com.hnlx.collegeinfo.entity.param.institution.InstitutionPutParam;
+import com.hnlx.collegeinfo.entity.param.institution.*;
 import com.hnlx.collegeinfo.entity.returnning.ResultData;
 import com.hnlx.collegeinfo.service.InstitutionService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -35,6 +32,13 @@ public class InstitutionController {
     @GetMapping("list")
     public ResultData<Object> getInstitutionList(InstitutionListParam param){
         Object obj = institutionService.getInstitutionList(param);
+        return new ResultData<>().sendObj(true,obj);
+    }
+
+    @Operation(summary = "获取满足要求的机构数量和简要信息")
+    @GetMapping("num")
+    public ResultData<Object> getInstitutionNum(InstitutionNumParam param){
+        Object obj = institutionService.getInstitutionNum(param);
         return new ResultData<>().sendObj(true,obj);
     }
 

@@ -7,15 +7,13 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.github.yulichang.query.MPJQueryWrapper;
 import com.github.yulichang.wrapper.MPJLambdaWrapper;
-import com.hnlx.collegeinfo.entity.param.institution.FollowInstitutionParam;
-import com.hnlx.collegeinfo.entity.param.institution.InstitutionListParam;
-import com.hnlx.collegeinfo.entity.param.institution.InstitutionPostParam;
-import com.hnlx.collegeinfo.entity.param.institution.InstitutionPutParam;
+import com.hnlx.collegeinfo.entity.param.institution.*;
 import com.hnlx.collegeinfo.entity.po.FollowInstitution;
 import com.hnlx.collegeinfo.entity.po.Institution;
 import com.hnlx.collegeinfo.entity.returnning.institution.InstitutionDetail;
 import com.hnlx.collegeinfo.entity.vo.InstitutionBasicInfo;
 import com.hnlx.collegeinfo.entity.vo.InstitutionListElement;
+import com.hnlx.collegeinfo.entity.vo.InstitutionNumInfo;
 import com.hnlx.collegeinfo.map.FollowInstitutionMapper;
 import com.hnlx.collegeinfo.map.InstitutionMapper;
 import com.hnlx.collegeinfo.service.InstitutionService;
@@ -88,6 +86,25 @@ public class InstitutionServiceImpl implements InstitutionService {
             }
         }
         return listResult;
+    }
+
+    /**
+     * @Author qxh
+     * @Description 获取满足要求的机构数量和简要信息
+     **/
+    @Override
+    public Object getInstitutionNum(InstitutionNumParam param) {
+        MPJLambdaWrapper<Institution> wrapper = new MPJLambdaWrapper<Institution>()
+                .selectAll(Institution.class)
+                .like(Institution::getInstitutionCity,param.getInstitution_city())
+                .like(Institution::getInstitutionProvince,param.getInstitution_province())
+                .like(Institution::getInstitutionTarget,param.getInstitution_target());
+
+        List<InstitutionNumInfo> list = institutionMapper.selectJoinList(InstitutionNumInfo.class,wrapper);
+        Map<String,Object> result = new HashMap<>();
+        result.put("institution_list",list);
+        result.put("num",list.size());
+        return result;
     }
 
     /**
