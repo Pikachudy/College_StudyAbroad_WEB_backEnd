@@ -6,6 +6,7 @@ import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.github.yulichang.wrapper.MPJLambdaWrapper;
+import com.hnlx.collegeinfo.entity.param.institution.FollowInstitutionParam;
 import com.hnlx.collegeinfo.entity.param.institution.InstitutionListParam;
 import com.hnlx.collegeinfo.entity.param.institution.InstitutionPostParam;
 import com.hnlx.collegeinfo.entity.po.FollowInstitution;
@@ -20,8 +21,6 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import java.io.IOException;
-import java.sql.Timestamp;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -142,7 +141,9 @@ public class InstitutionServiceImpl implements InstitutionService {
      * @Description 关注机构
      **/
     @Override
-    public Object followInstitution(int user_id, int institution_id) {
+    public Object followInstitution(FollowInstitutionParam param) {
+        int user_id = param.getUser_id();
+        int institution_id = param.getInstitution_id();
         QueryWrapper<FollowInstitution> wrapper = new QueryWrapper<FollowInstitution>()
                 .eq("institution_id",institution_id)
                 .eq("user_id",user_id);
@@ -163,6 +164,35 @@ public class InstitutionServiceImpl implements InstitutionService {
                         .eq("institution_id", institution_id)
                         .set("follow_time", new Date())
                         .set("cancel", false);
+                followInstitutionMapper.update(old, wrapper1);
+            }
+        } catch (Exception e){
+            return -1;
+        }
+        return 0;
+    }
+
+    @Override
+    public Object cancelFollowInstitution(FollowInstitutionParam param) {
+        int user_id = param.getUser_id();
+        int institution_id = param.getInstitution_id();
+        QueryWrapper<FollowInstitution> wrapper = new QueryWrapper<FollowInstitution>()
+                .eq("institution_id",institution_id)
+                .eq("user_id",user_id);
+
+        FollowInstitution old = followInstitutionMapper.selectOne(wrapper);
+
+        if (old == null) {
+            return -1;
+        }
+
+        try {
+             if (!old.isCancel()) {
+                UpdateWrapper<FollowInstitution> wrapper1 = new UpdateWrapper<FollowInstitution>()
+                        .eq("user_id", user_id)
+                        .eq("institution_id", institution_id)
+                        .set("follow_time", new Date())
+                        .set("cancel", true);
                 followInstitutionMapper.update(old, wrapper1);
             }
         } catch (Exception e){

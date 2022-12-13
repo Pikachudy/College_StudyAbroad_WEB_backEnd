@@ -1,5 +1,6 @@
 package com.hnlx.collegeinfo.controller;
 
+import com.hnlx.collegeinfo.entity.param.institution.FollowInstitutionParam;
 import com.hnlx.collegeinfo.entity.param.institution.InstitutionListParam;
 import com.hnlx.collegeinfo.entity.param.institution.InstitutionPostParam;
 import com.hnlx.collegeinfo.entity.returnning.ResultData;
@@ -49,8 +50,19 @@ public class InstitutionController {
 
     @Operation(summary = "关注机构")
     @PostMapping("follow")
-    public ResultData<Object> followInstitution(int user_id, int institution_id){
-        Object obj = institutionService.followInstitution(user_id,institution_id);
+    public ResultData<Object> followInstitution(FollowInstitutionParam param){
+        Object obj = institutionService.followInstitution(param);
+        if((int)obj == -1){
+            return new ResultData<>().FAILED();
+        } else {
+            return new ResultData<>().OK();
+        }
+    }
+
+    @Operation(summary = "关注机构")
+    @PutMapping("follow")
+    public ResultData<Object> cancelFollowInstitution(FollowInstitutionParam param){
+        Object obj = institutionService.cancelFollowInstitution(param);
         if((int)obj == -1){
             return new ResultData<>().FAILED();
         } else {
