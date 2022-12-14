@@ -8,9 +8,12 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.github.yulichang.query.MPJQueryWrapper;
 import com.github.yulichang.wrapper.MPJLambdaWrapper;
 import com.hnlx.collegeinfo.entity.param.institution.*;
+import com.hnlx.collegeinfo.entity.po.College;
 import com.hnlx.collegeinfo.entity.po.FollowInstitution;
+import com.hnlx.collegeinfo.entity.po.FollowUniversity;
 import com.hnlx.collegeinfo.entity.po.Institution;
 import com.hnlx.collegeinfo.entity.returnning.institution.InstitutionDetail;
+import com.hnlx.collegeinfo.entity.vo.CollegeFollowListElement;
 import com.hnlx.collegeinfo.entity.vo.InstitutionBasicInfo;
 import com.hnlx.collegeinfo.entity.vo.InstitutionListElement;
 import com.hnlx.collegeinfo.entity.vo.InstitutionNumInfo;
@@ -304,21 +307,13 @@ public class InstitutionServiceImpl implements InstitutionService {
      **/
     @Override
     public Object followInstitutionList(int user_id) {
-        QueryWrapper<FollowInstitution> wrapper = new QueryWrapper<FollowInstitution>()
-                .eq("user_id",user_id)
-                .eq("cancel",false);
+        MPJLambdaWrapper<FollowInstitution> wrapper = new MPJLambdaWrapper<FollowInstitution>()
+                .selectAll(Institution.class)
+                .rightJoin(Institution.class,Institution::getInstitutionId,FollowInstitution::getInstitutionId)
+                .eq(FollowInstitution::getUserId,user_id)
+                .eq(FollowInstitution::isCancel,false);
 
-        List<FollowInstitution> follows = followInstitutionMapper.selectList(wrapper);
-        List<InstitutionListElement> result = new ArrayList<>();
-
-        for(FollowInstitution follow:follows){
-            MPJQueryWrapper<Institution> wrapper1 = new MPJQueryWrapper<Institution>()
-                    .selectAll(Institution.class)
-                    .eq("institution_id",follow.getInstitutionId());
-
-            InstitutionListElement t = institutionMapper.selectJoinOne(InstitutionListElement.class,wrapper1);
-            result.add(t);
-        }
+        List<InstitutionListElement> result = followInstitutionMapper.selectJoinList(InstitutionListElement.class,wrapper);
 
         int count = result.size();
 

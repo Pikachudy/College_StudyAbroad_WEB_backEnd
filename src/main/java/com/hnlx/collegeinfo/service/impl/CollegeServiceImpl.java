@@ -5,18 +5,17 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.github.yulichang.query.MPJQueryWrapper;
 import com.github.yulichang.wrapper.MPJLambdaWrapper;
 import com.hnlx.collegeinfo.entity.param.college.FollowCollegeParam;
 import com.hnlx.collegeinfo.entity.param.college.SelectListParam;
-import com.hnlx.collegeinfo.entity.po.College;
+import com.hnlx.collegeinfo.entity.po.*;
 import com.hnlx.collegeinfo.entity.param.college.CollegeBasicInfoParam;
 import com.hnlx.collegeinfo.entity.param.college.CollegeIntroParam;
-import com.hnlx.collegeinfo.entity.po.FollowInstitution;
-import com.hnlx.collegeinfo.entity.po.FollowUniversity;
-import com.hnlx.collegeinfo.entity.po.Rank;
 import com.hnlx.collegeinfo.entity.returnning.college.BaiduBaikeResult;
 import com.hnlx.collegeinfo.entity.returnning.college.CollegeListResult;
 import com.hnlx.collegeinfo.entity.vo.CollegeBasicInfo;
+import com.hnlx.collegeinfo.entity.vo.CollegeFollowListElement;
 import com.hnlx.collegeinfo.map.CollegeMapper;
 import com.hnlx.collegeinfo.map.FollowUniversityMapper;
 import com.hnlx.collegeinfo.service.CollegeService;
@@ -27,8 +26,7 @@ import org.springframework.web.client.RestTemplate;
 
 import javax.annotation.Resource;
 import java.time.Duration;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 
 /**
@@ -189,5 +187,51 @@ public class CollegeServiceImpl implements CollegeService {
             return -1;
         }
         return 0;
+    }
+
+    /**
+     * @Author qxh
+     * @Description 查看是否关注高校
+     **/
+    @Override
+    public Object isFollowCollege(FollowCollegeParam param) {
+        int user_id = param.getUser_id();
+        int university_id = param.getUniversity_id();
+        QueryWrapper<FollowUniversity> wrapper = new QueryWrapper<FollowUniversity>()
+                .eq("university_id",university_id)
+                .eq("cancel",false);
+
+        long count = followUniversityMapper.selectCount(wrapper);
+
+        FollowUniversity followUniversity = followUniversityMapper.selectOne(wrapper.eq("user_id",user_id));
+        boolean flag = false;
+        if(followUniversity != null){
+            flag = true;
+        }
+
+        Map<String, Object> map = new HashMap<>();
+        map.put("isFollow",flag);
+        map.put("count",count);
+        return new JSONObject(map);
+    }
+
+    /**
+     * @Author qxh
+     * @Description 获取用户关注的高校的列表
+     **/
+    @Override
+    public Object followCollegeList(int user_id) {
+        MPJLambdaWrapper<FollowUniversity> wrapper = new MPJLambdaWrapper<FollowUniversity>()
+                .selectAll(College.class)
+                .rightJoin(College.class,College::getUniversityId,FollowUniversity::getUniversityId)
+                .eq(FollowUniversity::getUserId,user_id)
+                .eq(FollowUniversity::isCancel,false);
+        List<CollegeFollowListElement> result = followUniversityMapper.selectJoinList(CollegeFollowListElement.class,wrapper);
+        int count = result.size();
+
+        Map<String, Object> map = new HashMap<>();
+        map.put("count",count);
+        map.put("follows",result);
+        return new JSONObject(map);
     }
 }

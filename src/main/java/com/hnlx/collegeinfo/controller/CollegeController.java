@@ -2,6 +2,7 @@ package com.hnlx.collegeinfo.controller;
 
 import com.alibaba.fastjson.JSONObject;
 import com.hnlx.collegeinfo.entity.param.college.*;
+import com.hnlx.collegeinfo.entity.param.institution.FollowInstitutionParam;
 import com.hnlx.collegeinfo.entity.returnning.ResultData;
 import com.hnlx.collegeinfo.service.BingService;
 import com.hnlx.collegeinfo.service.CollegeService;
@@ -85,5 +86,19 @@ public class CollegeController {
         } else {
             return new ResultData<>().OK();
         }
+    }
+
+    @Operation(summary = "查看是否关注高校")
+    @GetMapping("follow")
+    public ResultData<Object> isFollowCollege(FollowCollegeParam param){
+        Object obj = collegeService.isFollowCollege(param);
+        return new ResultData<>().sendObj(true,obj);
+    }
+
+    @Operation(summary = "获取用户关注的高校列表")
+    @GetMapping("follow/{user_id}")
+    public ResultData<Object> followColleges(@PathVariable("user_id") int user_id){
+        Object obj = collegeService.followCollegeList(user_id);
+        return new ResultData<>().sendObj(true,obj);
     }
 }

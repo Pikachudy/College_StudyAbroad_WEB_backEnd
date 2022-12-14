@@ -18,4 +18,6 @@ public interface CollegeService {
 
     Object followCollege(FollowCollegeParam param);
     Object cancelFollowCollege(FollowCollegeParam param);
+    Object isFollowCollege(FollowCollegeParam param);
+    Object followCollegeList(int user_id);
 }
