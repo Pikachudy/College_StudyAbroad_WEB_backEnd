@@ -17,4 +17,5 @@ public interface CollegeService {
     public Object hipoCollegeBasicInfo(CollegeBasicInfoParam param);
 
     Object followCollege(FollowCollegeParam param);
+    Object cancelFollowCollege(FollowCollegeParam param);
 }

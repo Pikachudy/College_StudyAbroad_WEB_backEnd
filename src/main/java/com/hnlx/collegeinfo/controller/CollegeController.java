@@ -76,4 +76,14 @@ public class CollegeController {
         }
     }
 
+    @Operation(summary = "取消关注高校")
+    @PutMapping("follow")
+    public ResultData<Object> cancelFollowCollege(FollowCollegeParam param){
+        Object obj = collegeService.cancelFollowCollege(param);
+        if((int)obj == -1){
+            return new ResultData<>().FAILED();
+        } else {
+            return new ResultData<>().OK();
+        }
+    }
 }

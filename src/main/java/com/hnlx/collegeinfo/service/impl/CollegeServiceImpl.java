@@ -157,4 +157,37 @@ public class CollegeServiceImpl implements CollegeService {
         }
         return 0;
     }
+
+    /**
+     * @Author qxh
+     * @Description 取消关注高校
+     **/
+    @Override
+    public Object cancelFollowCollege(FollowCollegeParam param) {
+        int user_id = param.getUser_id();
+        int university_id = param.getUniversity_id();
+        QueryWrapper<FollowUniversity> wrapper = new QueryWrapper<FollowUniversity>()
+                .eq("university_id",university_id)
+                .eq("user_id",user_id);
+
+        FollowUniversity old = followUniversityMapper.selectOne(wrapper);
+
+        if (old == null) {
+            return -1;
+        }
+
+        try {
+            if (!old.isCancel()) {
+                UpdateWrapper<FollowUniversity> wrapper1 = new UpdateWrapper<FollowUniversity>()
+                        .eq("user_id", user_id)
+                        .eq("university_id", university_id)
+                        .set("follow_time", new Date())
+                        .set("cancel", true);
+                followUniversityMapper.update(old, wrapper1);
+            }
+        } catch (Exception e){
+            return -1;
+        }
+        return 0;
+    }
 }
