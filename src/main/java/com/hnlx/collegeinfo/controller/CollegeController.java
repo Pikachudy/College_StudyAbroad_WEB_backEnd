@@ -28,6 +28,15 @@ public class CollegeController {
     CollegeService collegeService;
     @Resource
     BingService bingService;
+    @Operation(summary = "根据高校中文名返回id")
+    @GetMapping
+    public ResultData<Object> getUniversityIdByChname(String university_chname){
+        Object obj = collegeService.getUniversityIdByChname(university_chname);
+        if(obj == null){
+            return new ResultData<>().FAILED();
+        }
+        return new ResultData<>().sendObj(true,obj);
+    }
     @Operation(summary = "根据id获取大学基本信息")
     @GetMapping("{university_id}")
     public ResultData<Object> getUniversityById(@PathVariable("university_id") int id){

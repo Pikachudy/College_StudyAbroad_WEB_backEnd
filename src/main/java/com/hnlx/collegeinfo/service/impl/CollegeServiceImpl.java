@@ -42,6 +42,21 @@ public class CollegeServiceImpl implements CollegeService {
     FollowUniversityMapper followUniversityMapper;
     @Resource
     StringRedisTemplate stringRedisTemplate;
+
+    @Override
+    public Object getUniversityIdByChname(String chname) {
+        QueryWrapper<College> wrapper = new QueryWrapper<College>()
+                .like("university_ch_name",chname);
+
+        College college = collegeMapper.selectOne(wrapper);
+        if(college == null){
+            return null;
+        }
+        Map<String, Object> map = new HashMap<>();
+        map.put("university_id",college.getUniversityId());
+        return new JSONObject(map);
+    }
+
     @Override
     public Object getUniversityById(int id) {
         College college = collegeMapper.selectById(id);

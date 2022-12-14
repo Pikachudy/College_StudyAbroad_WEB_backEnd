@@ -11,6 +11,7 @@ import com.hnlx.collegeinfo.entity.param.college.SelectListParam;
  * @date : 2022/10/15 12:25
  */
 public interface CollegeService {
+    Object getUniversityIdByChname(String chname);
     public Object getUniversityById(int id);
     public Object getUniversityList(SelectListParam param);
     public Object baiduCollegeIntro(CollegeIntroParam param);
