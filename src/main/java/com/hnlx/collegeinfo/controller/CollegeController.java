@@ -80,40 +80,4 @@ public class CollegeController {
         Object obj = JSONObject.parseObject(bingService.getVideo(param),Object.class);
         return new ResultData<>().sendObj(true,obj);
     }
-
-    @Operation(summary = "关注高校")
-    @PostMapping("follow")
-    public ResultData<Object> followCollege(FollowCollegeParam param){
-        Object obj = collegeService.followCollege(param);
-        if((int)obj == -1){
-            return new ResultData<>().FAILED();
-        } else {
-            return new ResultData<>().OK();
-        }
-    }
-
-    @Operation(summary = "取消关注高校")
-    @PutMapping("follow")
-    public ResultData<Object> cancelFollowCollege(FollowCollegeParam param){
-        Object obj = collegeService.cancelFollowCollege(param);
-        if((int)obj == -1){
-            return new ResultData<>().FAILED();
-        } else {
-            return new ResultData<>().OK();
-        }
-    }
-
-    @Operation(summary = "查看是否关注高校")
-    @GetMapping("follow")
-    public ResultData<Object> isFollowCollege(FollowCollegeParam param){
-        Object obj = collegeService.isFollowCollege(param);
-        return new ResultData<>().sendObj(true,obj);
-    }
-
-    @Operation(summary = "获取用户关注的高校列表")
-    @GetMapping("follow/{user_id}")
-    public ResultData<Object> followColleges(@PathVariable("user_id") int user_id){
-        Object obj = collegeService.followCollegeList(user_id);
-        return new ResultData<>().sendObj(true,obj);
-    }
 }

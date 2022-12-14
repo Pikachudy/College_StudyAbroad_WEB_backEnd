@@ -75,39 +75,4 @@ public class InstitutionController {
         }
     }
 
-    @Operation(summary = "关注机构")
-    @PostMapping("follow")
-    public ResultData<Object> followInstitution(FollowInstitutionParam param){
-        Object obj = institutionService.followInstitution(param);
-        if((int)obj == -1){
-            return new ResultData<>().FAILED();
-        } else {
-            return new ResultData<>().OK();
-        }
-    }
-
-    @Operation(summary = "取消关注机构")
-    @PutMapping("follow")
-    public ResultData<Object> cancelFollowInstitution(FollowInstitutionParam param){
-        Object obj = institutionService.cancelFollowInstitution(param);
-        if((int)obj == -1){
-            return new ResultData<>().FAILED();
-        } else {
-            return new ResultData<>().OK();
-        }
-    }
-
-    @Operation(summary = "查看是否关注机构")
-    @GetMapping("follow")
-    public ResultData<Object> isFollowInstitution(FollowInstitutionParam param){
-        Object obj = institutionService.isFollowInstitution(param);
-        return new ResultData<>().sendObj(true,obj);
-    }
-
-    @Operation(summary = "获取用户关注机构列表")
-    @GetMapping("follow/{user_id}")
-    public ResultData<Object> followInstitutions(@PathVariable("user_id") int user_id){
-        Object obj = institutionService.followInstitutionList(user_id);
-        return new ResultData<>().sendObj(true,obj);
-    }
 }

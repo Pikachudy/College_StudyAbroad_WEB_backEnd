@@ -18,8 +18,4 @@ public interface CollegeService {
     public Object baiduCollegeIntro(CollegeIntroParam param);
     public Object hipoCollegeBasicInfo(CollegeBasicInfoParam param);
 
-    Object followCollege(FollowCollegeParam param);
-    Object cancelFollowCollege(FollowCollegeParam param);
-    Object isFollowCollege(FollowCollegeParam param);
-    Object followCollegeList(int user_id);
 }

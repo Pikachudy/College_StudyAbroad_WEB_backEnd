@@ -2,12 +2,9 @@ package com.hnlx.collegeinfo.service.impl;
 
 import com.alibaba.fastjson.JSONObject;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.github.yulichang.query.MPJQueryWrapper;
 import com.github.yulichang.wrapper.MPJLambdaWrapper;
-import com.hnlx.collegeinfo.entity.param.college.FollowCollegeParam;
 import com.hnlx.collegeinfo.entity.param.college.SelectListParam;
 import com.hnlx.collegeinfo.entity.po.*;
 import com.hnlx.collegeinfo.entity.param.college.CollegeBasicInfoParam;
@@ -16,9 +13,7 @@ import com.hnlx.collegeinfo.entity.returnning.college.BaiduBaikeResult;
 import com.hnlx.collegeinfo.entity.returnning.college.CollegeDetailResult;
 import com.hnlx.collegeinfo.entity.returnning.college.CollegeListResult;
 import com.hnlx.collegeinfo.entity.vo.CollegeBasicInfo;
-import com.hnlx.collegeinfo.entity.vo.CollegeFollowListElement;
 import com.hnlx.collegeinfo.map.CollegeMapper;
-import com.hnlx.collegeinfo.map.FollowUniversityMapper;
 import com.hnlx.collegeinfo.map.RankMapper;
 import com.hnlx.collegeinfo.service.CollegeService;
 import org.springframework.beans.BeanUtils;
@@ -43,8 +38,6 @@ public class CollegeServiceImpl implements CollegeService {
     CollegeMapper collegeMapper;
     @Resource
     RankMapper rankMapper;
-    @Resource
-    FollowUniversityMapper followUniversityMapper;
     @Resource
     StringRedisTemplate stringRedisTemplate;
 
@@ -171,120 +164,5 @@ public class CollegeServiceImpl implements CollegeService {
         RestTemplate restTemplate = new RestTemplate();
         Object object = restTemplate.getForObject("http://universities.hipolabs.com/search?name="+param.getCollege_enname(),Object.class);
         return object;
-    }
-
-    /**
-     * @Author qxh
-     * @Description 关注高校
-     **/
-    @Override
-    public Object followCollege(FollowCollegeParam param) {
-        int user_id = param.getUser_id();
-        int university_id = param.getUniversity_id();
-        QueryWrapper<FollowUniversity> wrapper = new QueryWrapper<FollowUniversity>()
-                .eq("university_id",university_id)
-                .eq("user_id",user_id);
-
-        FollowUniversity old = followUniversityMapper.selectOne(wrapper);
-
-        try {
-            if (old == null) {
-                FollowUniversity followUniversity = new FollowUniversity();
-                followUniversity.setUniversityId(university_id);
-                followUniversity.setUserId(user_id);
-                followUniversity.setFollowTime(new Date());
-                followUniversity.setCancel(false);
-                followUniversityMapper.insert(followUniversity);
-            } else if (old.isCancel()) {
-                UpdateWrapper<FollowUniversity> wrapper1 = new UpdateWrapper<FollowUniversity>()
-                        .eq("user_id", user_id)
-                        .eq("university_id", university_id)
-                        .set("follow_time", new Date())
-                        .set("cancel", false);
-                followUniversityMapper.update(old, wrapper1);
-            }
-        } catch (Exception e){
-            return -1;
-        }
-        return 0;
-    }
-
-    /**
-     * @Author qxh
-     * @Description 取消关注高校
-     **/
-    @Override
-    public Object cancelFollowCollege(FollowCollegeParam param) {
-        int user_id = param.getUser_id();
-        int university_id = param.getUniversity_id();
-        QueryWrapper<FollowUniversity> wrapper = new QueryWrapper<FollowUniversity>()
-                .eq("university_id",university_id)
-                .eq("user_id",user_id);
-
-        FollowUniversity old = followUniversityMapper.selectOne(wrapper);
-
-        if (old == null) {
-            return -1;
-        }
-
-        try {
-            if (!old.isCancel()) {
-                UpdateWrapper<FollowUniversity> wrapper1 = new UpdateWrapper<FollowUniversity>()
-                        .eq("user_id", user_id)
-                        .eq("university_id", university_id)
-                        .set("follow_time", new Date())
-                        .set("cancel", true);
-                followUniversityMapper.update(old, wrapper1);
-            }
-        } catch (Exception e){
-            return -1;
-        }
-        return 0;
-    }
-
-    /**
-     * @Author qxh
-     * @Description 查看是否关注高校
-     **/
-    @Override
-    public Object isFollowCollege(FollowCollegeParam param) {
-        int user_id = param.getUser_id();
-        int university_id = param.getUniversity_id();
-        QueryWrapper<FollowUniversity> wrapper = new QueryWrapper<FollowUniversity>()
-                .eq("university_id",university_id)
-                .eq("cancel",false);
-
-        long count = followUniversityMapper.selectCount(wrapper);
-
-        FollowUniversity followUniversity = followUniversityMapper.selectOne(wrapper.eq("user_id",user_id));
-        boolean flag = false;
-        if(followUniversity != null){
-            flag = true;
-        }
-
-        Map<String, Object> map = new HashMap<>();
-        map.put("isFollow",flag);
-        map.put("count",count);
-        return new JSONObject(map);
-    }
-
-    /**
-     * @Author qxh
-     * @Description 获取用户关注的高校的列表
-     **/
-    @Override
-    public Object followCollegeList(int user_id) {
-        MPJLambdaWrapper<FollowUniversity> wrapper = new MPJLambdaWrapper<FollowUniversity>()
-                .selectAll(College.class)
-                .rightJoin(College.class,College::getUniversityId,FollowUniversity::getUniversityId)
-                .eq(FollowUniversity::getUserId,user_id)
-                .eq(FollowUniversity::isCancel,false);
-        List<CollegeFollowListElement> result = followUniversityMapper.selectJoinList(CollegeFollowListElement.class,wrapper);
-        int count = result.size();
-
-        Map<String, Object> map = new HashMap<>();
-        map.put("count",count);
-        map.put("follows",result);
-        return new JSONObject(map);
     }
 }

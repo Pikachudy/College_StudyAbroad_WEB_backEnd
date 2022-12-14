@@ -7,13 +7,10 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.github.yulichang.wrapper.MPJLambdaWrapper;
 import com.hnlx.collegeinfo.entity.param.institution.*;
-import com.hnlx.collegeinfo.entity.po.FollowInstitution;
 import com.hnlx.collegeinfo.entity.po.Institution;
 import com.hnlx.collegeinfo.entity.returnning.institution.InstitutionDetail;
 import com.hnlx.collegeinfo.entity.vo.InstitutionBasicInfo;
-import com.hnlx.collegeinfo.entity.vo.InstitutionListElement;
 import com.hnlx.collegeinfo.entity.vo.InstitutionNumInfo;
-import com.hnlx.collegeinfo.map.FollowInstitutionMapper;
 import com.hnlx.collegeinfo.map.InstitutionMapper;
 import com.hnlx.collegeinfo.service.InstitutionService;
 import com.hnlx.collegeinfo.utils.OssUtils;
@@ -32,8 +29,6 @@ import java.util.*;
 public class InstitutionServiceImpl implements InstitutionService {
     @Resource
     private InstitutionMapper institutionMapper;
-    @Resource
-    private FollowInstitutionMapper followInstitutionMapper;
     @Resource
     OssUtils ossUtils;
 
@@ -186,12 +181,6 @@ public class InstitutionServiceImpl implements InstitutionService {
 
     /**
      * @Author qxh
-     * @Description 修改机构信息
-     **/
-
-
-    /**
-     * @Author qxh
      * @Description 删除机构
      **/
     @Override
@@ -202,120 +191,4 @@ public class InstitutionServiceImpl implements InstitutionService {
         return institutionMapper.delete(wrapper);
     }
 
-    /**
-     * @Author qxh
-     * @Description 关注机构
-     **/
-    @Override
-    public Object followInstitution(FollowInstitutionParam param) {
-        int user_id = param.getUser_id();
-        int institution_id = param.getInstitution_id();
-        QueryWrapper<FollowInstitution> wrapper = new QueryWrapper<FollowInstitution>()
-                .eq("institution_id",institution_id)
-                .eq("user_id",user_id);
-
-        FollowInstitution old = followInstitutionMapper.selectOne(wrapper);
-
-        try {
-            if (old == null) {
-                FollowInstitution followInstitution = new FollowInstitution();
-                followInstitution.setInstitutionId(institution_id);
-                followInstitution.setUserId(user_id);
-                followInstitution.setFollowTime(new Date());
-                followInstitution.setCancel(false);
-                followInstitutionMapper.insert(followInstitution);
-            } else if (old.isCancel()) {
-                UpdateWrapper<FollowInstitution> wrapper1 = new UpdateWrapper<FollowInstitution>()
-                        .eq("user_id", user_id)
-                        .eq("institution_id", institution_id)
-                        .set("follow_time", new Date())
-                        .set("cancel", false);
-                followInstitutionMapper.update(old, wrapper1);
-            }
-        } catch (Exception e){
-            return -1;
-        }
-        return 0;
-    }
-
-    /**
-     * @Author qxh
-     * @Description 取消关注机构
-     **/
-    @Override
-    public Object cancelFollowInstitution(FollowInstitutionParam param) {
-        int user_id = param.getUser_id();
-        int institution_id = param.getInstitution_id();
-        QueryWrapper<FollowInstitution> wrapper = new QueryWrapper<FollowInstitution>()
-                .eq("institution_id",institution_id)
-                .eq("user_id",user_id);
-
-        FollowInstitution old = followInstitutionMapper.selectOne(wrapper);
-
-        if (old == null) {
-            return -1;
-        }
-
-        try {
-             if (!old.isCancel()) {
-                UpdateWrapper<FollowInstitution> wrapper1 = new UpdateWrapper<FollowInstitution>()
-                        .eq("user_id", user_id)
-                        .eq("institution_id", institution_id)
-                        .set("follow_time", new Date())
-                        .set("cancel", true);
-                followInstitutionMapper.update(old, wrapper1);
-            }
-        } catch (Exception e){
-            return -1;
-        }
-        return 0;
-    }
-
-    /**
-     * @Author qxh
-     * @Description 查看是否关注机构
-     **/
-    @Override
-    public Object isFollowInstitution(FollowInstitutionParam param) {
-        int user_id = param.getUser_id();
-        int institution_id = param.getInstitution_id();
-        QueryWrapper<FollowInstitution> wrapper = new QueryWrapper<FollowInstitution>()
-                .eq("institution_id",institution_id)
-                .eq("cancel",false);
-
-        long count = followInstitutionMapper.selectCount(wrapper);
-
-        FollowInstitution followInstitution = followInstitutionMapper.selectOne(wrapper.eq("user_id",user_id));
-        boolean flag = false;
-        if(followInstitution != null){
-            flag = true;
-        }
-
-        Map<String, Object> map = new HashMap<>();
-        map.put("isFollow",flag);
-        map.put("count",count);
-        return new JSONObject(map);
-    }
-
-    /**
-     * @Author qxh
-     * @Description 获取用户关注的机构列表
-     **/
-    @Override
-    public Object followInstitutionList(int user_id) {
-        MPJLambdaWrapper<FollowInstitution> wrapper = new MPJLambdaWrapper<FollowInstitution>()
-                .selectAll(Institution.class)
-                .rightJoin(Institution.class,Institution::getInstitutionId,FollowInstitution::getInstitutionId)
-                .eq(FollowInstitution::getUserId,user_id)
-                .eq(FollowInstitution::isCancel,false);
-
-        List<InstitutionListElement> result = followInstitutionMapper.selectJoinList(InstitutionListElement.class,wrapper);
-
-        int count = result.size();
-
-        Map<String, Object> map = new HashMap<>();
-        map.put("count",count);
-        map.put("follows",result);
-        return new JSONObject(map);
-    }
 }
