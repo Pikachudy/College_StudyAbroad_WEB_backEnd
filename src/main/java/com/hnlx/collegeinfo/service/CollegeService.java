@@ -1,6 +1,7 @@
 package com.hnlx.collegeinfo.service;
 
 import com.hnlx.collegeinfo.entity.param.college.CollegeBasicInfoParam;
+import com.hnlx.collegeinfo.entity.param.college.FollowCollegeParam;
 import com.hnlx.collegeinfo.entity.param.college.CollegeIntroParam;
 import com.hnlx.collegeinfo.entity.param.college.SelectListParam;
 
@@ -14,4 +15,6 @@ public interface CollegeService {
     public Object getUniversityList(SelectListParam param);
     public Object baiduCollegeIntro(CollegeIntroParam param);
     public Object hipoCollegeBasicInfo(CollegeBasicInfoParam param);
+
+    Object followCollege(FollowCollegeParam param);
 }

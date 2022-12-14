@@ -1,20 +1,14 @@
 package com.hnlx.collegeinfo.controller;
 
 import com.alibaba.fastjson.JSONObject;
-import com.hnlx.collegeinfo.entity.param.college.BingVideoParam;
-import com.hnlx.collegeinfo.entity.param.college.CollegeBasicInfoParam;
-import com.hnlx.collegeinfo.entity.param.college.CollegeIntroParam;
-import com.hnlx.collegeinfo.entity.param.college.SelectListParam;
+import com.hnlx.collegeinfo.entity.param.college.*;
 import com.hnlx.collegeinfo.entity.returnning.ResultData;
 import com.hnlx.collegeinfo.service.BingService;
 import com.hnlx.collegeinfo.service.CollegeService;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 
 import javax.annotation.Resource;
@@ -69,6 +63,17 @@ public class CollegeController {
     public ResultData<Object> bingSearchVideo(BingVideoParam param){
         Object obj = JSONObject.parseObject(bingService.getVideo(param),Object.class);
         return new ResultData<>().sendObj(true,obj);
+    }
+
+    @Operation(summary = "关注高校")
+    @PostMapping("follow")
+    public ResultData<Object> followCollege(FollowCollegeParam param){
+        Object obj = collegeService.followCollege(param);
+        if((int)obj == -1){
+            return new ResultData<>().FAILED();
+        } else {
+            return new ResultData<>().OK();
+        }
     }
 
 }

@@ -1,18 +1,24 @@
 package com.hnlx.collegeinfo.service.impl;
 
 import com.alibaba.fastjson.JSONObject;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.github.yulichang.wrapper.MPJLambdaWrapper;
+import com.hnlx.collegeinfo.entity.param.college.FollowCollegeParam;
 import com.hnlx.collegeinfo.entity.param.college.SelectListParam;
 import com.hnlx.collegeinfo.entity.po.College;
 import com.hnlx.collegeinfo.entity.param.college.CollegeBasicInfoParam;
 import com.hnlx.collegeinfo.entity.param.college.CollegeIntroParam;
+import com.hnlx.collegeinfo.entity.po.FollowInstitution;
+import com.hnlx.collegeinfo.entity.po.FollowUniversity;
 import com.hnlx.collegeinfo.entity.po.Rank;
 import com.hnlx.collegeinfo.entity.returnning.college.BaiduBaikeResult;
 import com.hnlx.collegeinfo.entity.returnning.college.CollegeListResult;
 import com.hnlx.collegeinfo.entity.vo.CollegeBasicInfo;
 import com.hnlx.collegeinfo.map.CollegeMapper;
+import com.hnlx.collegeinfo.map.FollowUniversityMapper;
 import com.hnlx.collegeinfo.service.CollegeService;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;
@@ -21,6 +27,7 @@ import org.springframework.web.client.RestTemplate;
 
 import javax.annotation.Resource;
 import java.time.Duration;
+import java.util.Date;
 import java.util.List;
 
 
@@ -33,6 +40,8 @@ import java.util.List;
 public class CollegeServiceImpl implements CollegeService {
     @Resource
     CollegeMapper collegeMapper;
+    @Resource
+    FollowUniversityMapper followUniversityMapper;
     @Resource
     StringRedisTemplate stringRedisTemplate;
     @Override
@@ -111,5 +120,41 @@ public class CollegeServiceImpl implements CollegeService {
         RestTemplate restTemplate = new RestTemplate();
         Object object = restTemplate.getForObject("http://universities.hipolabs.com/search?name="+param.getCollege_enname(),Object.class);
         return object;
+    }
+
+    /**
+     * @Author qxh
+     * @Description 关注高校
+     **/
+    @Override
+    public Object followCollege(FollowCollegeParam param) {
+        int user_id = param.getUser_id();
+        int university_id = param.getUniversity_id();
+        QueryWrapper<FollowUniversity> wrapper = new QueryWrapper<FollowUniversity>()
+                .eq("university_id",university_id)
+                .eq("user_id",user_id);
+
+        FollowUniversity old = followUniversityMapper.selectOne(wrapper);
+
+        try {
+            if (old == null) {
+                FollowUniversity followUniversity = new FollowUniversity();
+                followUniversity.setUniversityId(university_id);
+                followUniversity.setUserId(user_id);
+                followUniversity.setFollowTime(new Date());
+                followUniversity.setCancel(false);
+                followUniversityMapper.insert(followUniversity);
+            } else if (old.isCancel()) {
+                UpdateWrapper<FollowUniversity> wrapper1 = new UpdateWrapper<FollowUniversity>()
+                        .eq("user_id", user_id)
+                        .eq("university_id", university_id)
+                        .set("follow_time", new Date())
+                        .set("cancel", false);
+                followUniversityMapper.update(old, wrapper1);
+            }
+        } catch (Exception e){
+            return -1;
+        }
+        return 0;
     }
 }
