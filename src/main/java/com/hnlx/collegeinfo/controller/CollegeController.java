@@ -29,8 +29,8 @@ public class CollegeController {
     @Resource
     BingService bingService;
     @Operation(summary = "根据高校中文名返回id")
-    @GetMapping
-    public ResultData<Object> getUniversityIdByChname(String university_chname){
+    @GetMapping("id")
+    public ResultData<Object> getUniversityIdByChName(String university_chname){
         Object obj = collegeService.getUniversityIdByChname(university_chname);
         if(obj == null){
             return new ResultData<>().FAILED();
@@ -41,6 +41,12 @@ public class CollegeController {
     @GetMapping("{university_id}")
     public ResultData<Object> getUniversityById(@PathVariable("university_id") int id){
         Object obj = collegeService.getUniversityById(id);
+        return new ResultData<>().sendObj(true,obj);
+    }
+    @Operation(summary = "根据中文名获取大学基本信息")
+    @GetMapping
+    public ResultData<Object> getUniversityInfoByChName(String university_chname){
+        Object obj = collegeService.getUniversityByChName(university_chname);
         return new ResultData<>().sendObj(true,obj);
     }
     @Operation(summary = "根据条件筛选高校列表（带分页）")
