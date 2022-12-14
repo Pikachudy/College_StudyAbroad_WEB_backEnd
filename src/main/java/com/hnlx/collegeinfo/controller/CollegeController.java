@@ -1,20 +1,15 @@
 package com.hnlx.collegeinfo.controller;
 
 import com.alibaba.fastjson.JSONObject;
-import com.hnlx.collegeinfo.entity.param.college.BingVideoParam;
-import com.hnlx.collegeinfo.entity.param.college.CollegeBasicInfoParam;
-import com.hnlx.collegeinfo.entity.param.college.CollegeIntroParam;
-import com.hnlx.collegeinfo.entity.param.college.SelectListParam;
+import com.hnlx.collegeinfo.entity.param.college.*;
+import com.hnlx.collegeinfo.entity.param.institution.FollowInstitutionParam;
 import com.hnlx.collegeinfo.entity.returnning.ResultData;
 import com.hnlx.collegeinfo.service.BingService;
 import com.hnlx.collegeinfo.service.CollegeService;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 
 import javax.annotation.Resource;
@@ -33,10 +28,25 @@ public class CollegeController {
     CollegeService collegeService;
     @Resource
     BingService bingService;
+    @Operation(summary = "根据高校中文名返回id")
+    @GetMapping("id")
+    public ResultData<Object> getUniversityIdByChName(String university_chname){
+        Object obj = collegeService.getUniversityIdByChname(university_chname);
+        if(obj == null){
+            return new ResultData<>().FAILED();
+        }
+        return new ResultData<>().sendObj(true,obj);
+    }
     @Operation(summary = "根据id获取大学基本信息")
     @GetMapping("{university_id}")
     public ResultData<Object> getUniversityById(@PathVariable("university_id") int id){
         Object obj = collegeService.getUniversityById(id);
+        return new ResultData<>().sendObj(true,obj);
+    }
+    @Operation(summary = "根据中文名获取大学基本信息")
+    @GetMapping
+    public ResultData<Object> getUniversityInfoByChName(String university_chname){
+        Object obj = collegeService.getUniversityByChName(university_chname);
         return new ResultData<>().sendObj(true,obj);
     }
     @Operation(summary = "根据条件筛选高校列表（带分页）")
@@ -70,5 +80,4 @@ public class CollegeController {
         Object obj = JSONObject.parseObject(bingService.getVideo(param),Object.class);
         return new ResultData<>().sendObj(true,obj);
     }
-
 }

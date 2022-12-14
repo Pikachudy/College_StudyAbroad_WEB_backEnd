@@ -1,19 +1,22 @@
 package com.hnlx.collegeinfo.service.impl;
 
 import com.alibaba.fastjson.JSONObject;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.github.yulichang.wrapper.MPJLambdaWrapper;
 import com.hnlx.collegeinfo.entity.param.college.SelectListParam;
-import com.hnlx.collegeinfo.entity.po.College;
+import com.hnlx.collegeinfo.entity.po.*;
 import com.hnlx.collegeinfo.entity.param.college.CollegeBasicInfoParam;
 import com.hnlx.collegeinfo.entity.param.college.CollegeIntroParam;
-import com.hnlx.collegeinfo.entity.po.Rank;
 import com.hnlx.collegeinfo.entity.returnning.college.BaiduBaikeResult;
+import com.hnlx.collegeinfo.entity.returnning.college.CollegeDetailResult;
 import com.hnlx.collegeinfo.entity.returnning.college.CollegeListResult;
 import com.hnlx.collegeinfo.entity.vo.CollegeBasicInfo;
 import com.hnlx.collegeinfo.map.CollegeMapper;
+import com.hnlx.collegeinfo.map.RankMapper;
 import com.hnlx.collegeinfo.service.CollegeService;
+import org.springframework.beans.BeanUtils;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.stereotype.Service;
@@ -21,7 +24,7 @@ import org.springframework.web.client.RestTemplate;
 
 import javax.annotation.Resource;
 import java.time.Duration;
-import java.util.List;
+import java.util.*;
 
 
 /**
@@ -34,11 +37,61 @@ public class CollegeServiceImpl implements CollegeService {
     @Resource
     CollegeMapper collegeMapper;
     @Resource
+    RankMapper rankMapper;
+    @Resource
     StringRedisTemplate stringRedisTemplate;
+
+    /**
+     * @Author qxh
+     * @Description 根据中文名获取id
+     **/
+    @Override
+    public Object getUniversityIdByChname(String chname) {
+        QueryWrapper<College> wrapper = new QueryWrapper<College>()
+                .like("university_ch_name",chname);
+
+        College college = collegeMapper.selectOne(wrapper);
+        if(college == null){
+            return null;
+        }
+        Map<String, Object> map = new HashMap<>();
+        map.put("university_id",college.getUniversityId());
+        return new JSONObject(map);
+    }
+
+    /**
+     * @Author qxh
+     * @Description 根据中文名获取大学详情
+     **/
+    @Override
+    public Object getUniversityByChName(String chname) {
+        QueryWrapper<College> wrapper = new QueryWrapper<College>()
+                .like("university_ch_name",chname);
+
+        College college = collegeMapper.selectOne(wrapper);
+        QueryWrapper<Rank> wrapper1 = new QueryWrapper<Rank>()
+                .eq("university_id",college.getUniversityId());
+        List<Rank> ranks = rankMapper.selectList(wrapper1);
+        CollegeDetailResult result = new CollegeDetailResult();
+        BeanUtils.copyProperties(college,result);
+        result.setRank(ranks);
+        result.setUniversityCollege(List.of(college.getUniversityCollege().split("\n")));
+        result.setUniversityPhoto(List.of(college.getUniversityPhoto().split(";")));
+        return result;
+    }
+
     @Override
     public Object getUniversityById(int id) {
+        QueryWrapper<Rank> wrapper = new QueryWrapper<Rank>()
+                .eq("university_id",id);
+        List<Rank> ranks = rankMapper.selectList(wrapper);
         College college = collegeMapper.selectById(id);
-        return college;
+        CollegeDetailResult result = new CollegeDetailResult();
+        BeanUtils.copyProperties(college,result);
+        result.setRank(ranks);
+        result.setUniversityCollege(List.of(college.getUniversityCollege().split("\n")));
+        result.setUniversityPhoto(List.of(college.getUniversityPhoto().split(";")));
+        return result;
     }
 
     @Override
