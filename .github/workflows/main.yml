@@ -33,8 +33,8 @@ jobs:
       - name: Login to Docker Hub
         uses: docker/login-action@v2.1.0
         with:
-          username: ${{ secrets.DOCKER_HUB_USERNAME }}
-          password: ${{ secrets.DOCKER_HUB_ACESS_TOKEN }}
+          username: ${{ DOCKERHUB.DOCKER_HUB_USERNAME }}
+          password: ${{ DOCKERHUB.DOCKER_HUB_ACESS_TOKEN }}
       - name: Set up Docker Buildx
         id: buildx
         uses: docker/setup-buildx-action@v2.2.1
@@ -46,16 +46,16 @@ jobs:
           context: ./
           file: ./Dockerfile
           push: true
-          tags: ${{ secrets.DOCKER_HUB_USERNAME }}/houniao:collegeinfo
+          tags: ${{ DOCKERHUB.DOCKER_HUB_USERNAME }}/houniao:collegeinfo
       # push后，用ssh连接服务器执行脚本    
       - name: SSH
         uses: cross-the-world/ssh-pipeline@v1.2.0
         with:
-          host: ${{ secrets.HOST }}
-          user: ${{ secrets.USER }}
-          pass: ${{ secrets.SSH_PASSWORD}}
+          host: ${{ SERVER_PIKACHUDY_GPU.HOST }}
+          user: ${{ SERVER_PIKACHUDY_GPU.USER }}
+          pass: ${{ SERVER_PIKACHUDY_GPU.SSH_PASSWORD}}
           script: |
-            docker pull ${{ secrets.DOCKER_HUB_USERNAME }}/houniao:collegeinfo
+            docker pull ${{ DOCKERHUB.DOCKER_HUB_USERNAME }}/houniao:collegeinfo
             (docker rm -f collegeinfo || true)
-            docker run --name=collegeinfo -d -p 8090:8090 ${{ secrets.DOCKER_HUB_USERNAME }}/houniao:collegeinfo
+            docker run --name=collegeinfo -d -p 8090:8090 ${{ DOCKERHUB.DOCKER_HUB_USERNAME }}/houniao:collegeinfo
             docker image prune -af
