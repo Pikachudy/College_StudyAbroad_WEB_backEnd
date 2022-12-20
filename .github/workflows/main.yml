@@ -1,0 +1,61 @@
+name: Deploy with docker
+
+on:
+  push:
+    branches: [ master ]
+#     paths: "/src/main/**"
+  pull_request:
+    branches: [ master ]
+#     paths: "/src/main/**"
+
+jobs:
+  compile:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Set up JDK 17
+        uses: actions/setup-java@v2
+        with:
+          java-version: '17'
+          distribution: 'adopt'
+      # maven缓存，不加的话每次都会去重新拉取，会影响速度   
+      - name: Dependies Cache
+        uses: actions/cache@v2
+        with:
+          path: ~/.m2/repository
+          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+          restore-keys: |
+            ${{ runner.os }}-maven-
+      # 编译打包      
+      - name: Build with Maven
+        run: mvn clean package -Dmaven.test.skip=true
+      # 登录Docker Hub  
+      - name: Login to Docker Hub
+        uses: docker/login-action@v2.1.0
+        with:
+          username: ${{ secrets.DOCKER_HUB_USERNAME }}
+          password: ${{ secrets.DOCKER_HUB_ACESS_TOKEN }}
+      - name: Set up Docker Buildx
+        id: buildx
+        uses: docker/setup-buildx-action@v2.2.1
+      # build 镜像并push到中央仓库中  
+      - name: Build and push
+        id: docker_build
+        uses: docker/build-push-action@v3.2.0
+        with:
+          context: ./
+          file: ./Dockerfile
+          push: true
+          tags: ${{ secrets.DOCKER_HUB_USERNAME }}/houniao:collegeinfo
+      # push后，用ssh连接服务器执行脚本    
+      - name: SSH
+        uses: cross-the-world/ssh-pipeline@v1.2.0
+        with:
+          host: ${{ secrets.HOST }}
+          user: ${{ secrets.USER }}
+          pass: ${{ secrets.SSH_PASSWORD}}
+          script: |
+            docker pull ${{ secrets.DOCKER_HUB_USERNAME }}/houniao:collegeinfo
+            (docker rm -f collegeinfo || true)
+            docker run --name=collegeinfo -d -p 8090:8090 ${{ secrets.DOCKER_HUB_USERNAME }}/houniao:collegeinfo
+            docker image prune -af
