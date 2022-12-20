@@ -53,7 +53,7 @@ jobs:
         with:
           host: ${{ secrets.HOST }}
           user: ${{ secrets.USER }}
-          ssh_private_key: ${{ secrets.SSH_PRIVATEKEY }}
+          key: ${{ secrets.SSH_PRIVATEKEY }}
           script: |
             docker pull ${{ secrets.DOCKER_HUB_USERNAME }}/houniao:collegeinfo
             (docker rm -f collegeinfo || true)
