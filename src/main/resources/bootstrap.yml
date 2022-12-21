@@ -5,7 +5,7 @@ spring:
     nacos:
       discovery:
         server-addr: 106.54.160.145:8848
-        ip: 106.54.160.145
+#        ip: 106.54.160.145
       config:
         server-addr: 106.54.160.145:8848
         file-extension: yaml
