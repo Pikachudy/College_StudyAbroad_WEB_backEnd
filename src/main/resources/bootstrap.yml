@@ -5,11 +5,12 @@ spring:
     nacos:
       discovery:
         server-addr: 106.54.160.145:8848
+        ip: 106.54.160.145
       config:
         server-addr: 106.54.160.145:8848
         file-extension: yaml
         shared-configs:
-          - data-id: registry_ip
-            group: DEFAULT_GROUP
+#          - data-id: registry_ip
+#            group: DEFAULT_GROUP
           - data-id: szb_oss
             group: DEFAULT_GROUP
