@@ -57,5 +57,5 @@ jobs:
           script: |
             docker pull ${{ secrets.DOCKER_HUB_USERNAME }}/houniao:collegeinfo
             (docker rm -f collegeinfo || true)
-            docker run --name=collegeinfo -d -p 8090:8090 ${{ secrets.DOCKER_HUB_USERNAME }}/houniao:collegeinfo
+            docker run -e SPRING_CLOUD_NACOS_DISCOVERY_IP = "${{ secrets.HOST }}" --name=collegeinfo -d -p 8090:8090 ${{ secrets.DOCKER_HUB_USERNAME }}/houniao:collegeinfo
             docker image prune -af
