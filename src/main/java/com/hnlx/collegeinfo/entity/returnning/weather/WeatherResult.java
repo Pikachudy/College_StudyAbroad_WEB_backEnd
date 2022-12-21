@@ -23,6 +23,4 @@ public class WeatherResult {
     int cnt;
     @Schema(description = "城市信息")
     Object city;
-
-
 }
