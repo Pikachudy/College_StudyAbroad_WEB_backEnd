@@ -4,10 +4,10 @@ spring:
   cloud:
     nacos:
       discovery:
-        server-addr: 106.54.160.145:8848
+        server-addr: 49.235.72.134
         ip: ${SPRING_CLOUD_NACOS_DISCOVERY_IP}
       config:
-        server-addr: 106.54.160.145:8848
+        server-addr: 49.235.72.134:8848
         file-extension: yaml
         shared-configs:
 #          - data-id: registry_ip
