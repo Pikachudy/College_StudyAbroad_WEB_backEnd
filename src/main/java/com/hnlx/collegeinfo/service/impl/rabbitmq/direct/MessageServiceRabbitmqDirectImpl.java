@@ -20,5 +20,4 @@ public class MessageServiceRabbitmqDirectImpl implements MessageService {
         Object res = template.convertSendAndReceive("amq.direct","college",msg);
         System.out.println("收到相应"+res);
     }
-
 }

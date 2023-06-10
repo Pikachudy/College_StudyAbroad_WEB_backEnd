@@ -49,7 +49,6 @@ public class CollegeServiceImpl implements CollegeService {
     public Object getUniversityIdByChname(String chname) {
         QueryWrapper<College> wrapper = new QueryWrapper<College>()
                 .like("university_ch_name",chname);
-
         College college = collegeMapper.selectOne(wrapper);
         if(college == null){
             return null;

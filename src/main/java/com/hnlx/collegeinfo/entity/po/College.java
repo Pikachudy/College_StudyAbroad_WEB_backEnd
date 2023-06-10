@@ -5,7 +5,7 @@ import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
 
 /**
- * description : 大学对象
+ * description : College PO
  * @author : Pikachudy
  * @date : 2022/11/14 22:11
  */
