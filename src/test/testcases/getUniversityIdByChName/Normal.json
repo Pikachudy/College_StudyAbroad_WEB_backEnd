@@ -1,0 +1,98 @@
+[
+  {
+    "chName": "牛津大学",
+    "expectedId": "6"
+  },
+  {
+    "chName": "麻省理工学院",
+    "expectedId": "5"
+  },
+  {
+    "chName": "牛津大学",
+    "expectedId": "6"
+  },
+  {
+    "chName": "斯坦福大学",
+    "expectedId": "7"
+  },
+  {
+    "chName": "剑桥大学",
+    "expectedId": "8"
+  },
+  {
+    "chName": "哈佛大学",
+    "expectedId": "9"
+  },
+  {
+    "chName": "加州理工学院",
+    "expectedId": "10"
+  },
+  {
+    "chName": "帝国理工学院",
+    "expectedId": "11"
+  },
+  {
+    "chName": "伦敦大学学院",
+    "expectedId": "12"
+  },
+  {
+    "chName": "芝加哥大学",
+    "expectedId": "13"
+  },
+  {
+    "chName": "新加坡国立大学",
+    "expectedId": "14"
+  },
+  {
+    "chName": "南洋理工大学",
+    "expectedId": "15"
+  },
+  {
+    "chName": "香港大学",
+    "expectedId": "16"
+  },
+  {
+    "chName": "澳大利亚国立大学",
+    "expectedId": "17"
+  },
+  {
+    "chName": "都柏林圣三一大学",
+    "expectedId": "18"
+  },
+  {
+    "chName": "昆士兰大学",
+    "expectedId": "19"
+  },
+  {
+    "chName": "多伦多大学",
+    "expectedId": "20"
+  },
+  {
+    "chName": "奥克兰大学",
+    "expectedId": "21"
+  },
+  {
+    "chName": "香港中文大学",
+    "expectedId": "22"
+  },
+  {
+    "chName": "麦吉尔大学",
+    "expectedId": "23"
+  },
+  {
+    "chName": "奥塔哥大学",
+    "expectedId": "24"
+  },
+  {
+    "chName": "同济大学",
+    "expectedId": "26"
+  },
+  {
+    "chName": "上海交通大学",
+    "expectedId": "-1"
+  },
+  {
+    "chName": "清华大学",
+    "expectedId": "-1"
+  }
+]

@@ -1,0 +1,54 @@
+[
+  {
+    "chName": "",
+    "expectedId": "-1"
+  },
+  {
+    "chName": "   ",
+    "expectedId": "-1"
+  },
+  {
+    "chName": "0",
+    "expectedId": "-1"
+  },
+  {
+    "chName": "a",
+    "expectedId": "-1"
+  },
+  {
+    "chName": "港",
+    "expectedId": "-1"
+  },
+  {
+    "chName": "@#$%",
+    "expectedId": "-1"
+  },
+  {
+    "chName": "123",
+    "expectedId": "-1"
+  },
+  {
+    "chName": null,
+    "expectedId": "-1"
+  },
+  {
+    "chName": "中文123",
+    "expectedId": "-1"
+  },
+  {
+    "chName": "测试",
+    "expectedId": "-1"
+  },
+  {
+    "chName": "invalid input",
+    "expectedId": "-1"
+  },
+  {
+    "chName": "长字符串长字符串长字符串长字符串长字符串长字符串长字符串长字符串长字符串长字符串长字符串",
+    "expectedId": "-1"
+  },
+  {
+    "chName": "abcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyzabcdefghijklmnopqrstuvwxyz1",
+    "expectedId": "-1"
+  }
+]
