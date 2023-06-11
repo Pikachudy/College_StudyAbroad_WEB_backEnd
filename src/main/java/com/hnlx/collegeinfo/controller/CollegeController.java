@@ -37,6 +37,17 @@ public class CollegeController {
         }
         return new ResultData<>().sendObj(true,obj);
     }
+    @Operation(summary = "根据高校中文名返回id")
+    @GetMapping("id/en")
+    public ResultData<Object> getUniversityIdByEnName(String university_enname){
+        Object obj = collegeService.getUniversityIdByEnname(university_enname);
+        if(obj == null){
+            return new ResultData<>().FAILED();
+        }
+        return new ResultData<>().sendObj(true,obj);
+    }
+
+
     @Operation(summary = "根据id获取大学基本信息")
     @GetMapping("{university_id}")
     public ResultData<Object> getUniversityById(@PathVariable("university_id") int id){
