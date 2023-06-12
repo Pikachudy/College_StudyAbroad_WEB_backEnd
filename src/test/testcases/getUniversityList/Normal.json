@@ -1,0 +1,92 @@
+[
+  {
+    "param": {
+      "rank_year": "2020",
+      "tag": "1",
+      "university_country": "美国",
+      "page": 1,
+      "page_size": 5
+    },
+    "resArrayLength": 5
+  },
+  {
+    "param": {
+      "rank_year": "2019",
+      "tag": "0",
+      "university_country": "美国",
+      "page": 1,
+      "page_size": 5
+    },
+    "resArrayLength": 0
+  },
+  {
+    "param": {
+      "rank_year": "2021",
+      "tag": "1",
+      "university_country": "美国",
+      "page": 2,
+      "page_size": 10
+    },
+    "resArrayLength": 0
+  },
+  {
+    "param": {
+      "rank_year": "2021",
+      "tag": "2",
+      "university_country": "英国",
+      "page": 1,
+      "page_size": 5
+    },
+    "resArrayLength": 4
+  },
+  {
+    "param": {
+      "rank_year": "2019",
+      "tag": "1",
+      "university_country": "新加坡",
+      "page": 1,
+      "page_size": 20
+    },
+    "resArrayLength": 0
+  },
+  {
+    "param": {
+      "rank_year": "2020",
+      "tag": "0",
+      "university_country": "新加坡",
+      "page": 2,
+      "page_size": 5
+    },
+    "resArrayLength": 0
+  },
+  {
+    "param": {
+      "rank_year": "2019",
+      "tag": "3",
+      "university_country": "美国",
+      "page": 1,
+      "page_size": 10
+    },
+    "resArrayLength": 0
+  },
+  {
+    "param": {
+      "rank_year": "2021",
+      "tag": "2",
+      "university_country": "英国",
+      "page": 2,
+      "page_size": 5
+    },
+    "resArrayLength": 0
+  },
+  {
+    "param": {
+      "rank_year": "2020",
+      "tag": "1",
+      "university_country": "新加坡",
+      "page": 3,
+      "page_size": 20
+    },
+    "resArrayLength": 0
+  }
+]

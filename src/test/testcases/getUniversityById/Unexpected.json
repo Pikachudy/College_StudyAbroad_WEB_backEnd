@@ -1,0 +1,34 @@
+[
+  {
+    "id": "invalid",
+    "expectedChName": null
+  },
+  {
+    "id": null,
+    "expectedChName": null
+  },
+  {
+    "id": -5,
+    "expectedChName": null
+  },
+  {
+    "id": 999999999999,
+    "expectedChName": null
+  },
+  {
+    "id": 10.5,
+    "expectedChName": null
+  },
+  {
+    "id": 0,
+    "expectedChName": null
+  },
+  {
+    "id": 3.14,
+    "expectedChName": null
+  },
+  {
+    "id": [],
+    "expectedChName": null
+  }
+]

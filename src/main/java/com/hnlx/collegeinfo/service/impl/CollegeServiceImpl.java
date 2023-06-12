@@ -80,11 +80,14 @@ public class CollegeServiceImpl implements CollegeService {
     }
 
     @Override
-    public Object getUniversityById(int id) {
+    public CollegeDetailResult getUniversityById(int id) {
         QueryWrapper<Rank> wrapper = new QueryWrapper<Rank>()
                 .eq("university_id",id);
         List<Rank> ranks = rankMapper.selectList(wrapper);
         College college = collegeMapper.selectById(id);
+        if(college == null){
+            return null;
+        }
         CollegeDetailResult result = new CollegeDetailResult();
         BeanUtils.copyProperties(college,result);
         result.setRank(ranks);
@@ -94,7 +97,7 @@ public class CollegeServiceImpl implements CollegeService {
     }
 
     @Override
-    public Object getUniversityList(SelectListParam param) {
+    public CollegeListResult getUniversityList(SelectListParam param) {
         System.out.println("\n"+param);
         MPJLambdaWrapper<College> wrapper = new MPJLambdaWrapper<College>()
                 .selectAll(College.class)

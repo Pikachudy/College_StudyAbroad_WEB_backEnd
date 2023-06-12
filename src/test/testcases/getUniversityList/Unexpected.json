@@ -1,0 +1,72 @@
+[
+  {
+    "param": {
+      "rank_year": "2020",
+      "tag": "1",
+      "university_country": "美国",
+      "page": 0,
+      "page_size": 5
+    },
+    "resArrayLength": 5
+  },
+  {
+    "param": {
+      "rank_year": "2020",
+      "tag": "1",
+      "university_country": "美国",
+      "page": -1,
+      "page_size": 10
+    },
+    "resArrayLength": 5
+  },
+  {
+    "param": {
+      "rank_year": "2020",
+      "tag": "1",
+      "university_country": "美国",
+      "page": 1,
+      "page_size": 0
+    },
+    "resArrayLength": 5
+  },
+  {
+    "param": {
+      "rank_year": "2020",
+      "tag": "",
+      "university_country": "美国",
+      "page": 1,
+      "page_size": 5
+    },
+    "resArrayLength": 5
+  },
+  {
+    "param": {
+      "rank_year": "2020",
+      "tag": " ",
+      "university_country": "美国",
+      "page": 1,
+      "page_size": 5
+    },
+    "resArrayLength": 5
+  },
+  {
+    "param": {
+      "rank_year": "",
+      "tag": "1",
+      "university_country": "美国",
+      "page": 1,
+      "page_size": 5
+    },
+    "resArrayLength": null
+  },
+  {
+    "param": {
+      "rank_year": "2020",
+      "tag": "1",
+      "university_country": "",
+      "page": 1,
+      "page_size": 5
+    },
+    "resArrayLength": null
+  }
+]
