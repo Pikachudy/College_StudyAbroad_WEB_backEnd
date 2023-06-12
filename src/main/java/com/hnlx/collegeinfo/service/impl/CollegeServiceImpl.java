@@ -59,6 +59,20 @@ public class CollegeServiceImpl implements CollegeService {
         return new JSONObject(map);
     }
 
+    @Override
+    public Object getUniversityIdByEnname(String enname) {
+        QueryWrapper<College> wrapper = new QueryWrapper<College>()
+                .like("university_en_name",enname);
+
+        College college = collegeMapper.selectOne(wrapper);
+        if(college == null){
+            return null;
+        }
+        Map<String, Object> map = new HashMap<>();
+        map.put("university_id",college.getUniversityId());
+        return new JSONObject(map);
+    }
+
     /**
      * @Author qxh
      * @Description 根据中文名获取大学详情

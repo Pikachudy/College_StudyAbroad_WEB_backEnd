@@ -32,5 +32,6 @@ public class College {
     String universityTuition;
     float universityTofelRequirement;
     float universityIeltsRequirement;
+    String universityScholarship;
     String universityPhoto;
 }
