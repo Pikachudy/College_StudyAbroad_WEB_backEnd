@@ -1,8 +1,10 @@
-package com.hnlx.collegeinfo;
+package com.hnlx.collegeinfo.integration;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
+import com.hnlx.collegeinfo.controller.CollegeController;
 import com.hnlx.collegeinfo.entity.param.college.SelectListParam;
+import com.hnlx.collegeinfo.entity.returnning.ResultData;
 import com.hnlx.collegeinfo.entity.returnning.college.CollegeListResult;
 import com.hnlx.collegeinfo.service.impl.CollegeServiceImpl;
 import io.qameta.allure.Feature;
@@ -15,7 +17,6 @@ import org.junit.jupiter.params.provider.MethodSource;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import javax.annotation.Resource;
-
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -27,7 +28,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 @SpringBootTest
 public class GetUniversityListTest {
     @Resource
-    CollegeServiceImpl collegeService;
+    CollegeController collegeController;
     @Tag("获取大学列表")
     @Tag("输入合法")
     @Feature("用户输入筛选条件，返回符合条件的大学列表")
@@ -35,8 +36,8 @@ public class GetUniversityListTest {
     @ParameterizedTest
     @MethodSource("testCasesNormally")
     void getUniversityList(SelectListParam param,int expectedLength){
-        CollegeListResult res = collegeService.getUniversityList(param);
-        assertEquals(expectedLength,res.getCollegeBasicInfoList().size());
+        ResultData<Object> res = collegeController.getUniversityList(param);
+        assertEquals(expectedLength,((CollegeListResult)res.getObj()).getCollegeBasicInfoList().size());
     }
 
     @Tag("获取大学列表")
@@ -46,8 +47,8 @@ public class GetUniversityListTest {
     @ParameterizedTest
     @MethodSource("testCasesUnexpectedly")
     void getUniversityListUnexpected(SelectListParam param,int expectedLength){
-        CollegeListResult res = collegeService.getUniversityList(param);
-        assertEquals(expectedLength,res.getCollegeBasicInfoList().size());
+        ResultData<Object> res = collegeController.getUniversityList(param);
+        assertEquals(expectedLength,((CollegeListResult)res.getObj()).getCollegeBasicInfoList().size());
     }
     /**
      * 测试用例——输入正常
@@ -59,7 +60,7 @@ public class GetUniversityListTest {
         String jsonContent = Files.readString(Path.of("src/test/testcases/getUniversityList/Normal.json"));
         JSONArray jsonArray = JSON.parseArray(jsonContent);
 
-        List<GetUniversityListTest.TestCase> testCases = jsonArray.toJavaList(GetUniversityListTest.TestCase.class);
+        List<TestCase> testCases = jsonArray.toJavaList(TestCase.class);
 
         return testCases.stream().map(testCase ->
                 Arguments.of(testCase.getParam() ,testCase.getResArrayLength())
@@ -75,7 +76,7 @@ public class GetUniversityListTest {
         String jsonContent = Files.readString(Path.of("src/test/testcases/getUniversityList/Unexpected.json"));
         JSONArray jsonArray = JSON.parseArray(jsonContent);
 
-        List<GetUniversityListTest.TestCase> testCases = jsonArray.toJavaList(GetUniversityListTest.TestCase.class);
+        List<TestCase> testCases = jsonArray.toJavaList(TestCase.class);
 
         return testCases.stream().map(testCase ->
                 Arguments.of(testCase.getParam() ,testCase.getResArrayLength())

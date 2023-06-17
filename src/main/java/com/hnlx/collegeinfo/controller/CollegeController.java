@@ -41,6 +41,9 @@ public class CollegeController {
     @GetMapping("{university_id}")
     public ResultData<Object> getUniversityById(@PathVariable("university_id") int id){
         Object obj = collegeService.getUniversityById(id);
+        if(obj == null){
+            return new ResultData<>().FAILED();
+        }
         return new ResultData<>().sendObj(true,obj);
     }
     @Operation(summary = "根据中文名获取大学基本信息")

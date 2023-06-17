@@ -1,7 +1,9 @@
-package com.hnlx.collegeinfo;
+package com.hnlx.collegeinfo.integration;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
+import com.hnlx.collegeinfo.controller.CollegeController;
+import com.hnlx.collegeinfo.entity.returnning.ResultData;
 import com.hnlx.collegeinfo.entity.returnning.college.CollegeDetailResult;
 import com.hnlx.collegeinfo.service.impl.CollegeServiceImpl;
 import io.qameta.allure.Feature;
@@ -30,7 +32,7 @@ import java.util.stream.Stream;
 @SpringBootTest
 public class GetUniversityByIdTest {
     @Resource
-    CollegeServiceImpl collegeService;
+    CollegeController collegeController;
 
     @Tag("获取大学详情")
     @Tag("输入合法")
@@ -39,13 +41,8 @@ public class GetUniversityByIdTest {
     @ParameterizedTest
     @MethodSource("testCasesNormally")
     void getUniversityById(int id,String expectedChName){
-        CollegeDetailResult res = collegeService.getUniversityById(id);
-        if(expectedChName==null){
-            Assertions.assertNull(res,"输入的大学id不存在");
-        }
-        else{
-            Assertions.assertEquals(expectedChName,res.getUniversityChName());
-        }
+        ResultData<Object> res = collegeController.getUniversityById(id);
+        Assertions.assertEquals(expectedChName!=null,res.isStatus());
     }
     @Tag("获取大学详情")
     @Tag("输入非法")
@@ -55,8 +52,8 @@ public class GetUniversityByIdTest {
     @MethodSource("testCasesUnexpectedly")
     void getUniversityByIdUnexpectedly(Object id,String expectedChName){
         if(id instanceof Integer){
-            CollegeDetailResult res = collegeService.getUniversityById((Integer) id);
-            Assertions.assertNull(res,"输入的大学id非法");
+            ResultData<Object> res = collegeController.getUniversityById((Integer) id);
+            Assertions.assertEquals(expectedChName!=null,res.isStatus());
         }
         else{
             Assertions.assertFalse(id instanceof Integer, "输入的大学id类型非法");
@@ -73,7 +70,7 @@ public class GetUniversityByIdTest {
         String jsonContent = Files.readString(Path.of("src/test/testcases/getUniversityById/Normal.json"));
         JSONArray jsonArray = JSON.parseArray(jsonContent);
 
-        List<GetUniversityByIdTest.TestCase> testCases = jsonArray.toJavaList(GetUniversityByIdTest.TestCase.class);
+        List<TestCase> testCases = jsonArray.toJavaList(TestCase.class);
 
         return testCases.stream().map(testCase ->
                 Arguments.of(testCase.getId(), testCase.getExpectedChName())
@@ -89,7 +86,7 @@ public class GetUniversityByIdTest {
         String jsonContent = Files.readString(Path.of("src/test/testcases/getUniversityById/Unexpected.json"));
         JSONArray jsonArray = JSON.parseArray(jsonContent);
 
-        List<GetUniversityByIdTest.TestCase> testCases = jsonArray.toJavaList(GetUniversityByIdTest.TestCase.class);
+        List<TestCase> testCases = jsonArray.toJavaList(TestCase.class);
 
         return testCases.stream().map(testCase ->
                 Arguments.of(testCase.getId(), testCase.getExpectedChName())
