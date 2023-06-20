@@ -27,6 +27,11 @@ public class WeatherController {
     @GetMapping()
     public ResultData<Object> getWeather(GetWeatherParam param){
         Object weather = weatherService.getWeather(param);
-        return new ResultData<>().sendObj(true,weather);
+        if(weather==null){
+            return new ResultData<>().FAILED();
+        }
+        else{
+            return new ResultData<>().sendObj(true,weather);
+        }
     }
 }

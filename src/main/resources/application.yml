@@ -6,6 +6,9 @@ springdoc:
     path: /doc
   packages-to-scan: com.hnlx.collegeinfo
 
+spring:
+  jmx:
+    enabled: false
 # datasource is in nacos
 
 #mybatis-plus:

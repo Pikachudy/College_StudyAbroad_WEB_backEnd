@@ -3,6 +3,8 @@ package com.hnlx.collegeinfo.entity.returnning.news;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
+import java.util.Collection;
+
 /**
  * description : 新闻返回对象
  * @author : Pikachudy
@@ -12,9 +14,9 @@ import lombok.Data;
 @Schema(name = "新闻返回对象")
 public class NewsResult {
     @Schema(description = "是否成功")
-    int code;
+    private int code;
     @Schema(description = "提示信息")
-    String msg;
+    private String msg;
     @Schema(description = "请求主体")
-    Object newslist;
+    private Object newslist;
 }

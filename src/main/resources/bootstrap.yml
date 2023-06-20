@@ -1,6 +1,8 @@
 spring:
   application:
     name: CollegeService
+  jmx:
+    enabled: false
   cloud:
     nacos:
       discovery:

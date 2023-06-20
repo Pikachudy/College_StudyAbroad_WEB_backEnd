@@ -2,6 +2,7 @@ package com.hnlx.collegeinfo.unit;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
+import com.hnlx.collegeinfo.CollegeInfoApplication;
 import com.hnlx.collegeinfo.entity.returnning.college.CollegeDetailResult;
 import com.hnlx.collegeinfo.service.impl.CollegeServiceImpl;
 import io.qameta.allure.Feature;
@@ -27,7 +28,7 @@ import java.util.stream.Stream;
  * @author Pikachudy
  * @date 2023/06/11
  */
-@SpringBootTest
+@SpringBootTest(classes = CollegeInfoApplication.class)
 public class GetUniversityByIdTest {
     @Resource
     CollegeServiceImpl collegeService;

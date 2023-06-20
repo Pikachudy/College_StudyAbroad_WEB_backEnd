@@ -2,6 +2,8 @@ package com.hnlx.collegeinfo.unit;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
+import com.hnlx.collegeinfo.CollegeInfoApplication;
+import com.hnlx.collegeinfo.TestApplication;
 import com.hnlx.collegeinfo.service.impl.CollegeServiceImpl;
 import io.qameta.allure.Feature;
 import io.qameta.allure.Story;
@@ -27,7 +29,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
  * @author Pikachudy
  * @date 2023/06/10
  */
-@SpringBootTest
+@SpringBootTest(classes = CollegeInfoApplication.class)
+public
 class GetCollegeIdByNameTest{
     @Resource
     CollegeServiceImpl collegeService;

@@ -35,15 +35,22 @@ public class WeatherServiceImpl implements WeatherService {
 
         // 获取数据
         RestTemplate restTemplate = new RestTemplate();
-        weatherResult = restTemplate.
-                getForObject(
-                        "http://api.openweathermap.org/data/2.5/forecast?lat={lat}&lon={lon}&appid={API key}&lang={language}&units={measurement}",
-                WeatherResult.class,param.getLatitude(),param.getLongitude(), ApiKey.OPENWEATHER_KEY,"zh_cn","metric");
-
+        try {
+            weatherResult = restTemplate.
+                    getForObject(
+                            "http://api.openweathermap.org/data/2.5/forecast?lat={lat}&lon={lon}&appid={API key}&lang={language}&units={measurement}",
+                            WeatherResult.class,param.getLatitude(),param.getLongitude(), ApiKey.OPENWEATHER_KEY,"zh_cn","metric");
+        }
+        catch (Exception e){
+            return null;
+        }
         if(weatherResult.getCod().equals("200")){
             // 存入缓存
             ops.set(location_key,JSON.toJSONString(weatherResult),3, TimeUnit.HOURS);
+            return weatherResult;
         }
-        return weatherResult;
+        else{
+            return null;
+        }
     }
 }

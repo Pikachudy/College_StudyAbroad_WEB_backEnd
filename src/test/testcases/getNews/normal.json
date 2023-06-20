@@ -1,0 +1,44 @@
+[
+  {
+    "param": {
+      "district_name": "美国",
+      "news_num": 5
+    },
+    "expected": true
+  },
+  {
+    "param": {
+      "district_name": "英国",
+      "news_num": 5
+    },
+    "expected": true
+  },
+  {
+    "param": {
+      "district_name": "香港",
+      "news_num": 5
+    },
+    "expected": true
+  },
+  {
+    "param": {
+      "district_name": "新加坡",
+      "news_num": 10
+    },
+    "expected": true
+  },
+  {
+    "param": {
+      "district_name": "法国",
+      "news_num": 5
+    },
+    "expected": true
+  },
+  {
+    "param": {
+      "district_name": "艾欧尼亚",
+      "news_num": 5
+    },
+    "expected": false
+  }
+]

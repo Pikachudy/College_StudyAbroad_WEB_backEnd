@@ -1,0 +1,30 @@
+[
+  {
+    "param": {
+      "district_name": "",
+      "news_num": 5
+    },
+    "expected": false
+  },
+  {
+    "param": {
+      "district_name": " ",
+      "news_num": 5
+    },
+    "expected": false
+  },
+  {
+    "param": {
+      "district_name": "香港",
+      "news_num": -1
+    },
+    "expected": true
+  },
+  {
+    "param": {
+      "district_name": "新加坡",
+      "news_num": 0
+    },
+    "expected": true
+  }
+]

@@ -23,7 +23,7 @@ public class NewsServiceImpl implements NewsService {
     @Resource
     StringRedisTemplate stringRedisTemplate;
     @Override
-    public Object getDistrictNews(DistrictNewsParam param) {
+    public NewsResult getDistrictNews(DistrictNewsParam param) {
         RestTemplate restTemplate = new RestTemplate();
         int news_num= param.getNews_num();
         String district_name=param.getDistrict_name();

@@ -1,0 +1,128 @@
+[
+  {
+    "param": {
+      "longitude": 120.5,
+      "latitude": 30.2
+    },
+    "expected": true
+  },
+  {
+    "param": {
+      "longitude": -75.2,
+      "latitude": 39.9
+    },
+    "expected": true
+  },
+  {
+    "param": {
+      "longitude": 0,
+      "latitude": 0
+    },
+    "expected": true
+  },
+  {
+    "param": {
+      "longitude": 180,
+      "latitude": 90
+    },
+    "expected": true
+  },
+  {
+    "param": {
+      "longitude": -120,
+      "latitude": 40
+    },
+    "expected": true
+  },
+  {
+    "param": {
+      "longitude": 100,
+      "latitude": -50
+    },
+    "expected": true
+  },
+  {
+    "param": {
+      "longitude": 45.6,
+      "latitude": -78.9
+    },
+    "expected": true
+  },
+  {
+    "param": {
+      "longitude": -180,
+      "latitude": -90
+    },
+    "expected": true
+  },
+  {
+    "param": {
+      "longitude": 180,
+      "latitude": 90
+    },
+    "expected": true
+  },
+  {
+    "param": {
+      "longitude": -180,
+      "latitude": 0
+    },
+    "expected": true
+  },
+  {
+    "param": {
+      "longitude": 0,
+      "latitude": 90
+    },
+    "expected": true
+  },
+  {
+    "param": {
+      "longitude": 180,
+      "latitude": 0
+    },
+    "expected": true
+  },
+  {
+    "param": {
+      "longitude": 0,
+      "latitude": -90
+    },
+    "expected": true
+  },
+  {
+    "param": {
+      "longitude": -181,
+      "latitude": 50
+    },
+    "expected": false
+  },
+  {
+    "param": {
+      "longitude": 20,
+      "latitude": -91
+    },
+    "expected": false
+  },
+  {
+    "param": {
+      "longitude": 20,
+      "latitude": 91
+    },
+    "expected": false
+  },
+  {
+    "param": {
+      "longitude": 181,
+      "latitude": 91
+    },
+    "expected": false
+  },
+  {
+    "param": {
+      "longitude": 200,
+      "latitude": 100
+    },
+    "expected": false
+  }
+]
