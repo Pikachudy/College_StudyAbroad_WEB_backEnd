@@ -1,4 +1,4 @@
-package com.hnlx.collegeinfo;
+package com.hnlx.collegeinfo.unit;
 
 import com.hnlx.collegeinfo.unit.GetCollegeIdByNameTest;
 import com.hnlx.collegeinfo.unit.GetUniversityByIdTest;
@@ -8,22 +8,18 @@ import org.junit.platform.launcher.LauncherDiscoveryRequest;
 import org.junit.platform.launcher.core.LauncherDiscoveryRequestBuilder;
 import org.junit.platform.launcher.core.LauncherFactory;
 import org.junit.platform.launcher.listeners.SummaryGeneratingListener;
-import org.junit.platform.launcher.listeners.TestExecutionSummary;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.stereotype.Service;
 
-
-import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
 import static org.junit.platform.engine.discovery.DiscoverySelectors.selectClass;
-public class RegressionTest {
-    public static void doRegressionTest() {
+
+public class UnitTest {
+    public static void doUnitTest() {
         // 开辟子线程执行测试
 //        String command = "D:\\CodeTestTools\\allure-2.22.1\\bin\\allure.bat serve allure-results";
-        String command = "E:\\SoftWare\\allure-commandline-2.22.1\\allure-2.22.1\\bin\\allure.bat serve allure-results";
+        String command = "E:\\SoftWare\\allure-commandline-2.22.1\\allure-2.22.1\\bin\\allure.bat serve allure-results-unit";
         Path absolutePath = Paths.get(System.getProperty("user.dir"))
                 .toAbsolutePath();
         ProcessBuilder processBuilder = new ProcessBuilder(command.split(" "));

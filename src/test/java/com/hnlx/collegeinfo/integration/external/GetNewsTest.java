@@ -2,6 +2,7 @@ package com.hnlx.collegeinfo.integration.external;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
+import com.hnlx.collegeinfo.CollegeInfoApplication;
 import com.hnlx.collegeinfo.controller.CollegeController;
 import com.hnlx.collegeinfo.controller.NewsController;
 import com.hnlx.collegeinfo.entity.param.news.DistrictNewsParam;
@@ -23,7 +24,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.List;
 import java.util.stream.Stream;
-@SpringBootTest
+@SpringBootTest(classes = CollegeInfoApplication.class)
 public class GetNewsTest {
     @Resource
     NewsController newsController;

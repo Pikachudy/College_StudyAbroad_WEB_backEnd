@@ -2,6 +2,7 @@ package com.hnlx.collegeinfo.integration.external;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
+import com.hnlx.collegeinfo.CollegeInfoApplication;
 import com.hnlx.collegeinfo.controller.WeatherController;
 import com.hnlx.collegeinfo.entity.param.weather.GetWeatherParam;
 import com.hnlx.collegeinfo.entity.returnning.ResultData;
@@ -22,7 +23,7 @@ import java.nio.file.Path;
 import java.util.List;
 import java.util.stream.Stream;
 
-@SpringBootTest
+@SpringBootTest(classes = CollegeInfoApplication.class)
 public class GetWeatherTest {
     @Resource
     WeatherController weatherController;

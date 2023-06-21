@@ -2,6 +2,7 @@ package com.hnlx.collegeinfo.integration;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
+import com.hnlx.collegeinfo.CollegeInfoApplication;
 import com.hnlx.collegeinfo.controller.CollegeController;
 import com.hnlx.collegeinfo.entity.param.college.SelectListParam;
 import com.hnlx.collegeinfo.entity.returnning.ResultData;
@@ -25,7 +26,7 @@ import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-@SpringBootTest
+@SpringBootTest(classes = CollegeInfoApplication.class)
 public class GetUniversityListTest {
     @Resource
     CollegeController collegeController;

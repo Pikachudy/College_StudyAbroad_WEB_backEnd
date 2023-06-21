@@ -2,6 +2,7 @@ package com.hnlx.collegeinfo.integration;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
+import com.hnlx.collegeinfo.CollegeInfoApplication;
 import com.hnlx.collegeinfo.controller.CollegeController;
 import com.hnlx.collegeinfo.entity.returnning.ResultData;
 import com.hnlx.collegeinfo.service.impl.CollegeServiceImpl;
@@ -29,7 +30,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
  * @author Pikachudy
  * @date 2023/06/10
  */
-@SpringBootTest
+@SpringBootTest(classes = CollegeInfoApplication.class)
 class GetCollegeIdByNameTest{
     @Resource
     CollegeController collegeController;
